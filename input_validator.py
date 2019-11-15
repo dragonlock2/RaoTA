@@ -9,8 +9,8 @@ import numpy as np
 from student_utils import *
 
 # Change these if you want to allow files with different names and/or graph sizes
-RANGE_OF_INPUT_SIZES = [50, 100, 200]
-VALID_FILENAMES = ['50.in', '100.in', '200.in']
+RANGE_OF_INPUT_SIZES = [25, 50, 100, 200]
+VALID_FILENAMES = ['sample.in', '50.in', '100.in', '200.in']
 MAX_NAME_LENGTH = 20
 
 def validate_input(input_file, params=[]):

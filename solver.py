@@ -11,6 +11,18 @@ from student_utils import *
   Complete the following function.
 ======================================================================
 """
+def plotGraph():
+    pos = nx.spring_layout(G)
+    labels = nx.get_edge_attributes(G,'weight')
+    nx.draw_networkx_nodes(G, pos, node_color='c')
+    nx.draw_networkx_edges(G, pos)
+    nx.draw_networkx_labels(G, pos)
+    nx.draw_networkx_edge_labels(G,pos,edge_labels=labels)
+    plt.show()
+
+def powerset(iterable):
+    s = list(iterable)
+    return chain.from_iterable(combinations(s, r) for r in range(len(s)+1))
 
 def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_matrix, params=[]):
     """
@@ -24,8 +36,111 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
         A list of locations representing the car path
         A list of (location, [homes]) representing drop-offs
     """
-    pass
+
+    # TODO convert this to use numbers and not names
+
+    class Car():
+        def __init__(self, loc, tas, reached):
+            self.loc = loc
+            self.tas = tas.copy()
+            self.reached = reached.copy() # if already reached/left a place, can't dropoff there anymore, doesn't necessarily include current location
+
+        def __eq__(self, other):
+            return self.loc == other.loc and self.tas == other.tas # don't need reached
+
+        def __hash__(self):
+            return hash(self.loc) + sum([hash(l) for l in self.tas])
+
+        def __str__(self):
+            return "Car({}, {}, {})".format(self.loc, self.tas, self.reached)
+
+        def __repr__(self):
+            return self.__str__()
+
+        def isDone(self):
+            return self.loc == starting_car_location and len(self.tas) == 0
+
+    # Create graph
+    global G # TODO remove this line
+    G, _ = adjacency_matrix_to_graph(adjacency_matrix)
+    # locs = {i:list_of_locations[i] for i in range(len(list_of_locations))}
+    # nx.relabel_nodes(G, locs, copy=False)
+
+    list_of_homes = set([list_of_locations.index(h) for h in list_of_homes])
+    starting_car_location = list_of_locations.index(starting_car_location)
+
+    # Generate shortest path lengths to all nodes for dropoffs and returning to center
+    all_paths = dict(nx.all_pairs_dijkstra_path_length(G))
+
+    # Initialize variables for Dijkstra's
+    pq = hd.heapdict()
+    startcar = Car(starting_car_location, list_of_homes.copy(), set())
+    paths, costs = {}, {}
+
+    # Add source point
+    pq[startcar] = 0
+    paths[startcar] = startcar
+    costs[startcar] = 0
+
+    inf = float('inf')
+
+    # Run Dijkstra's
+    while pq:
+        # Pop off smallest in PQ
+        car, currcost = pq.popitem()
+
+        if car.isDone():
+            break
+
+        # Generate possible dropoffs and costs
+        if car.loc not in car.reached: # if we've been here before, not allowed to drop off here bc we could've done it earlier, not sure if implemented correctly
+            tas = car.tas - {car.loc} # if at home, drop them off
+            possible_dropoffs = [set(pd) for pd in powerset(tas)] # people left in car
+            possible_dropoffs_costs = [sum([all_paths[t][starting_car_location] for t in (tas - pd)]) for pd in possible_dropoffs] # generate costs to drop people off
+            newreached = car.reached.union(set([car.loc]))
+            for n in G.neighbors(car.loc):
+                for pd, pdcost in zip(possible_dropoffs, possible_dropoffs_costs):
+                    newcost = currcost + pdcost + all_paths[car.loc][n] # lol don't wanna check edge directly
+                    newcar = Car(n, pd, newreached)
+                    oldcost = costs.setdefault(newcar, inf)
+                    # relax edge
+                    if newcost < oldcost:
+                        pq[newcar] = newcost
+                        paths[newcar] = car
+                        costs[newcar] = newcost
+        else: # otherwise just move on
+            for n in G.neighbors(car.loc):
+                newcost = currcost + all_paths[car.loc][n]
+                newcar = Car(n, car.tas, car.reached)
+                oldcost = costs.setdefault(newcar, inf)
+                # relax edge
+                if newcost < oldcost:
+                    pq[newcar] = newcost
+                    paths[newcar] = car
+                    costs[newcar] = newcost
+
+    minpath = []
+    currcar = Car(starting_car_location, set(), set())
+    minpath.append(currcar)
+    while currcar != startcar:
+        currcar = paths[currcar]
+        minpath.append(currcar)
+    minpath = minpath[::-1]
     
+
+    listlocs, listdropoffs = [], {}
+    for i in range(len(minpath)):
+        listlocs.append(minpath[i].loc)
+        if (i < len(minpath) - 1):
+            drops = minpath[i].tas - minpath[i+1].tas
+            if len(drops) > 0:
+                listdropoffs[minpath[i].loc] = list(drops)
+
+    return listlocs, listdropoffs
+                
+        
+
+
 
 """
 ======================================================================

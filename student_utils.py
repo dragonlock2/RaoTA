@@ -1,5 +1,8 @@
 import networkx as nx
 import numpy as np
+import matplotlib.pyplot as plt
+import heapdict as hd
+from itertools import chain, combinations
 
 
 def decimal_digits_check(number):
