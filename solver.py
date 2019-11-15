@@ -39,6 +39,8 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
 
     # TODO convert this to use numbers and not names
 
+    t0 = time.perf_counter()
+
     class Car():
         def __init__(self, loc, tas, reached):
             self.loc = loc
@@ -63,9 +65,8 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
     # Create graph
     global G # TODO remove this line
     G, _ = adjacency_matrix_to_graph(adjacency_matrix)
-    # locs = {i:list_of_locations[i] for i in range(len(list_of_locations))}
-    # nx.relabel_nodes(G, locs, copy=False)
 
+    # Convert locations to indices
     list_of_homes = set([list_of_locations.index(h) for h in list_of_homes])
     starting_car_location = list_of_locations.index(starting_car_location)
 
@@ -79,8 +80,15 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
 
     # Add source point
     pq[startcar] = 0
-    paths[startcar] = startcar
+    paths[startcar] = None
     costs[startcar] = 0
+
+    # Code drops off TAs and moves, this is edge case where we drop off everyone and then move
+    endcar = Car(starting_car_location, set(), set())
+    naivecost = sum([all_paths[starting_car_location][t] for t in list_of_homes])
+    pq[endcar] = naivecost
+    paths[endcar] = startcar
+    costs[endcar] = naivecost
 
     inf = float('inf')
 
@@ -92,32 +100,31 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
         if car.isDone():
             break
 
-        # Generate possible dropoffs and costs
-        if car.loc not in car.reached: # if we've been here before, not allowed to drop off here bc we could've done it earlier, not sure if implemented correctly
-            tas = car.tas - {car.loc} # if at home, drop them off
-            possible_dropoffs = [set(pd) for pd in powerset(tas)] # people left in car
-            possible_dropoffs_costs = [sum([all_paths[t][starting_car_location] for t in (tas - pd)]) for pd in possible_dropoffs] # generate costs to drop people off
-            newreached = car.reached.union(set([car.loc]))
+        if car.loc in car.reached: # If we've been here before, can't drop off here bc we could've done it earlier (and have)
             for n in G.neighbors(car.loc):
-                for pd, pdcost in zip(possible_dropoffs, possible_dropoffs_costs):
-                    newcost = currcost + pdcost + all_paths[car.loc][n] # lol don't wanna check edge directly
-                    newcar = Car(n, pd, newreached)
-                    oldcost = costs.setdefault(newcar, inf)
-                    # relax edge
-                    if newcost < oldcost:
-                        pq[newcar] = newcost
-                        paths[newcar] = car
-                        costs[newcar] = newcost
-        else: # otherwise just move on
-            for n in G.neighbors(car.loc):
-                newcost = currcost + all_paths[car.loc][n]
+                newcost = currcost + 2/3 * all_paths[car.loc][n]
                 newcar = Car(n, car.tas, car.reached)
                 oldcost = costs.setdefault(newcar, inf)
-                # relax edge
+                # Relax edge
                 if newcost < oldcost:
                     pq[newcar] = newcost
-                    paths[newcar] = car
                     costs[newcar] = newcost
+                    paths[newcar] = car
+        else:
+            tas = car.tas - {car.loc} # if at home, drop them off
+            poss_dps = [set(pd) for pd in powerset(tas)] # ways to have people left in car
+            poss_dps_costs = [sum([all_paths[car.loc][t] for t in (tas - pd)]) for pd in poss_dps] # generate costs for each dropoff
+            newreached = car.reached.union(set([car.loc]))
+            for n in G.neighbors(car.loc):
+                for pd, pdcost in zip(poss_dps, poss_dps_costs):
+                    newcost = currcost + pdcost + 2/3 * all_paths[car.loc][n]
+                    newcar = Car(n, pd, newreached)
+                    oldcost = costs.setdefault(newcar, inf)
+                    # Relax edge
+                    if newcost < oldcost:
+                        pq[newcar] = newcost
+                        costs[newcar] = newcost
+                        paths[newcar] = car
 
     minpath = []
     currcar = Car(starting_car_location, set(), set())
@@ -136,12 +143,15 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
             if len(drops) > 0:
                 listdropoffs[minpath[i].loc] = list(drops)
 
+    # naive case
+    if len(listlocs) == 2:
+        listlocs = listlocs[:1]
+
+    t1 = time.perf_counter() - t0
+    print(" done! Time: {}s".format(t1))
+
     return listlocs, listdropoffs
                 
-        
-
-
-
 """
 ======================================================================
    No need to change any code below this line
@@ -171,7 +181,8 @@ def convertToFile(path, dropoff_mapping, path_to_file, list_locs):
     utils.write_to_file(path_to_file, string)
 
 def solve_from_file(input_file, output_directory, params=[]):
-    print('Processing', input_file)
+    print('Processing {}...'.format(input_file), end="")
+    sys.stdout.flush()
     
     input_data = utils.read_file(input_file)
     num_of_locations, num_houses, list_locations, list_houses, starting_car_location, adjacency_matrix = data_parser(input_data)

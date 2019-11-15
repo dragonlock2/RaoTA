@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import heapdict as hd
 from itertools import chain, combinations
-
+import time
 
 def decimal_digits_check(number):
     number = str(number)
