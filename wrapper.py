@@ -26,6 +26,7 @@ if __name__ == "__main__":
 	else:
 		print("Deleting old inputs/outputs...", end="")
 		sys.stdout.flush()
+		subprocess.run(["rm imgs/*.png"], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 		subprocess.run(["rm inputs/*.in"], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 		subprocess.run(["rm outputs/*.out"], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 		print("Done!\n")
@@ -33,7 +34,7 @@ if __name__ == "__main__":
 		print("Generating inputs... ", end="")
 		sys.stdout.flush() # aiya didn't realize this before
 		for n in args.nodes:
-			subprocess.run([python, "inputgen.py", "inputs/" + str(n) + ".in", str(n), str(round(n*args.ta_frac)), str(round(n*args.extra_edge_frac))])
+			subprocess.run([python, "inputgen.py", "inputs/" + str(n) + ".in", str(n), str(int(n*args.ta_frac)), str(int(n*args.extra_edge_frac))])
 		print("Done!\n")
 
 		print("Validating inputs... ", end="")
