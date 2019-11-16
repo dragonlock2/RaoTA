@@ -63,6 +63,11 @@ if __name__ == "__main__":
 		
 	print("Done!\n")
 
+	# delete naive files to avoid clutter
+	naives = glob.glob("./inputs/*naive*") + glob.glob("./outputs/*naive*")
+	if naives:
+		subprocess.run(["rm", *naives])
+
 
 
 

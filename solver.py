@@ -20,9 +20,9 @@ def plotGraph():
     nx.draw_networkx_edge_labels(G,pos,edge_labels=labels)
     plt.show()
 
-def powerset(iterable):
+def powerset(iterable): # NOTE: this doesn't include empty
     s = list(iterable)
-    return chain.from_iterable(combinations(s, r) for r in range(len(s)+1))
+    return chain.from_iterable(combinations(s, r) for r in range(1,len(s)+1))
 
 def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_matrix, params=[]):
     """
@@ -44,11 +44,11 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
     class Car():
         def __init__(self, loc, tas, reached):
             self.loc = loc
-            self.tas = tas.copy()
-            self.reached = reached.copy() # if already reached/left a place, can't dropoff there anymore, doesn't necessarily include current location
+            self.tas = tas.copy() # Make copies so don't run into any issues (probs don't have to do this bc I don't modify sets)
+            self.reached = reached.copy() # Places I've been, but only once I've left
 
         def __eq__(self, other):
-            return self.loc == other.loc and self.tas == other.tas # don't need reached
+            return self.loc == other.loc and self.tas == other.tas # Don't need reached
 
         def __hash__(self):
             return hash(self.loc) + sum([hash(l) for l in self.tas])
@@ -59,11 +59,36 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
         def __repr__(self):
             return self.__str__()
 
+        def neighbors(self):
+            neighs = []
+            if self.loc in self.reached: # If I've been here before, then can't drop anyone off
+                for n in G.neighbors(self.loc):
+                    cost = 2/3 * all_paths[self.loc][n]
+                    car = Car(n, self.tas, self.reached)
+                    neighs.append((car, cost))
+            else:
+                newreached = self.reached.union(set([self.loc]))
+                # Trivial - drop everyone off and head home (TODO - update minpath to account for jumping straight home)
+                cost = 2/3 * all_paths[self.loc][starting_car_location] + sum([all_paths[self.loc][t] for t in self.tas])
+                car = Car(starting_car_location, set(), newreached)
+                neighs.append((car, cost))
+                # Now try all ways of dropping people off
+                tas = self.tas - {self.loc} # If I'm at a TA's home, drop them off
+                pds = [set(pd) for pd in powerset(tas)]
+                pds_costs = [sum([all_paths[self.loc][t] for t in (tas - pd)]) for pd in pds]
+                for n in G.neighbors(self.loc):
+                    for pd, pdc in zip(pds, pds_costs):
+                        cost = 2/3 * all_paths[self.loc][n] + pdc
+                        car = Car(n, pd, newreached)
+                        neighs.append((car, cost))
+            return neighs
+
+
         def isDone(self):
             return self.loc == starting_car_location and len(self.tas) == 0
 
     # Create graph
-    global G # TODO remove this line
+    global G # Left here for debugging purposes
     G, _ = adjacency_matrix_to_graph(adjacency_matrix)
 
     # Convert locations to indices
@@ -71,7 +96,8 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
     starting_car_location = list_of_locations.index(starting_car_location)
 
     # Generate shortest path lengths to all nodes for dropoffs and returning to center
-    all_paths = dict(nx.all_pairs_dijkstra_path_length(G))
+    global pcessors
+    pcessors, all_paths = nx.floyd_warshall_predecessor_and_distance(G)
 
     # Initialize variables for Dijkstra's
     pq = hd.heapdict()
@@ -83,13 +109,6 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
     paths[startcar] = None
     costs[startcar] = 0
 
-    # Code drops off TAs and moves, this is edge case where we drop off everyone and then move
-    endcar = Car(starting_car_location, set(), set())
-    naivecost = sum([all_paths[starting_car_location][t] for t in list_of_homes])
-    pq[endcar] = naivecost
-    paths[endcar] = startcar
-    costs[endcar] = naivecost
-
     inf = float('inf')
 
     # Run Dijkstra's
@@ -100,41 +119,28 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
         if car.isDone():
             break
 
-        if car.loc in car.reached: # If we've been here before, can't drop off here bc we could've done it earlier (and have)
-            for n in G.neighbors(car.loc):
-                newcost = currcost + 2/3 * all_paths[car.loc][n]
-                newcar = Car(n, car.tas, car.reached)
-                oldcost = costs.setdefault(newcar, inf)
-                # Relax edge
-                if newcost < oldcost:
-                    pq[newcar] = newcost
-                    costs[newcar] = newcost
-                    paths[newcar] = car
-        else:
-            tas = car.tas - {car.loc} # if at home, drop them off
-            poss_dps = [set(pd) for pd in powerset(tas)] # ways to have people left in car
-            poss_dps_costs = [sum([all_paths[car.loc][t] for t in (tas - pd)]) for pd in poss_dps] # generate costs for each dropoff
-            newreached = car.reached.union(set([car.loc]))
-            for n in G.neighbors(car.loc):
-                for pd, pdcost in zip(poss_dps, poss_dps_costs):
-                    newcost = currcost + pdcost + 2/3 * all_paths[car.loc][n]
-                    newcar = Car(n, pd, newreached)
-                    oldcost = costs.setdefault(newcar, inf)
-                    # Relax edge
-                    if newcost < oldcost:
-                        pq[newcar] = newcost
-                        costs[newcar] = newcost
-                        paths[newcar] = car
+        for ncar, ncost in car.neighbors():
+            # Relax all edges
+            ncost += currcost
+            if ncost < costs.setdefault(ncar, inf):
+                pq[ncar] = ncost
+                costs[ncar] = ncost
+                paths[ncar] = car
 
+    # Reconstruct min path
     minpath = []
     currcar = Car(starting_car_location, set(), set())
-    minpath.append(currcar)
     while currcar != startcar:
         currcar = paths[currcar]
         minpath.append(currcar)
     minpath = minpath[::-1]
-    
+    # Didn't append end node yet so we can append shortest paths to it
+    pathback = nx.reconstruct_path(minpath[-1].loc, starting_car_location, pcessors)[1:-1] # Don't include first or last because already there
+    for n in pathback:
+        minpath.append(Car(n, set(), set()))
+    minpath.append(Car(starting_car_location, set(), set()))
 
+    # Convert to format for saving
     listlocs, listdropoffs = [], {}
     for i in range(len(minpath)):
         listlocs.append(minpath[i].loc)
@@ -143,7 +149,7 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
             if len(drops) > 0:
                 listdropoffs[minpath[i].loc] = list(drops)
 
-    # naive case
+    # Naive case
     if len(listlocs) == 2:
         listlocs = listlocs[:1]
 

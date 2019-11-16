@@ -7,8 +7,8 @@ import numpy as np
 import utils
 
 class Point():
-	MAX_X = 50
-	MAX_Y = 50
+	MAX_X = 100
+	MAX_Y = 100
 	DEC_PLACES = 5
 
 	def __init__(self, x, y):
