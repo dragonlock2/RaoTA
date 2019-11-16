@@ -1,2 +1,5 @@
-# project-fa19
+# RaoTA
 CS 170 Fall 2019 Project
+
+Matthew Tran, Kevin An, Joe Zou
+
