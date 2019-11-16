@@ -92,6 +92,7 @@ if __name__ == "__main__":
 	global adj
 	adj = nx.to_numpy_array(G)
 
+	# Start writing to file
 	global string
 	namemap = {i:"A" + str(i) for i in pts}
 	string = ""
