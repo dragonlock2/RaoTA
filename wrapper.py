@@ -61,8 +61,6 @@ if __name__ == "__main__":
 	v.sort(key=lambda x:x[1])
 	v = [(v[i], v[i+1]) for i in range(0, len(v), 2)]
 	for o, n in v:
-		# limited to 7 digits
-
 		d, w, t = float(o[7].split(b' ')[-1][:-1]), float(o[8].split(b' ')[-1][:-1]), float(o[9].split(b' ')[-1][:-1])
 		d, w, t = form(d), form(w), form(t)
 		print(o[1].decode("utf-8").split(" ")[1] + "     ", "Drive:", d, "Walk:", w, "Total:", t, sep='\t')

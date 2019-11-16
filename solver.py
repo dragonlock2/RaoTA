@@ -96,7 +96,7 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
     starting_car_location = list_of_locations.index(starting_car_location)
 
     # Generate shortest path lengths to all nodes for dropoffs and returning to center
-    global pcessors
+    global pcessors, all_paths
     pcessors, all_paths = nx.floyd_warshall_predecessor_and_distance(G)
 
     # Initialize variables for Dijkstra's
@@ -123,7 +123,7 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
             # Relax all edges
             ncost += currcost
             if ncost < costs.setdefault(ncar, inf):
-                pq[ncar] = ncost
+                pq[ncar] = ncost + heuristic(ncar, starting_car_location) # Conversion to A*
                 costs[ncar] = ncost
                 paths[ncar] = car
 
@@ -157,6 +157,10 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
     print(" done! Time: {}s".format(t1))
 
     return listlocs, listdropoffs
+
+def heuristic(car, tar):
+    # return 0
+    return 0
                 
 """
 ======================================================================

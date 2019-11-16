@@ -39,10 +39,18 @@ class Point():
 def plotGraph():
     pos = {i:pts[i].tupler() for i in pts}
     labels = nx.get_edge_attributes(G,'weight')
-    nx.draw_networkx_nodes(G, pos, node_color='c')
+    cmap = []
+    for node in G:
+    	if node == home:
+    		cmap.append('r')
+    	elif node in tas:
+    		cmap.append('g')
+    	else:
+    		cmap.append('c')
+    nx.draw_networkx_nodes(G, pos, node_color=cmap)
     nx.draw_networkx_edges(G, pos)
     nx.draw_networkx_labels(G, pos)
-    # nx.draw_networkx_edge_labels(G,pos,edge_labels=labels)
+    plt.savefig("imgs/" + str(args.locations) + ".png")
     plt.show()
 
 if __name__ == "__main__":
@@ -59,11 +67,9 @@ if __name__ == "__main__":
 
 	r.seed() # TODO allow adding a seed in arg
 
-	global pts
 	pts = Point.generatePoints(args.locations)
 	pts = {i:pts[i] for i in range(len(pts))} # legit just gonna name these points by their number
 
-	global G
 	G = nx.Graph()
 	G.add_nodes_from(pts)
 
@@ -89,11 +95,9 @@ if __name__ == "__main__":
 	home = r.sample(ps, 1)[0]
 	tas = r.sample(ps, args.TAs)
 
-	global adj
 	adj = nx.to_numpy_array(G)
 
 	# Start writing to file
-	global string
 	namemap = {i:"A" + str(i) for i in pts}
 	string = ""
 	string += str(len(pts)) + "\n" # Number of nodes
