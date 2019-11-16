@@ -1,5 +1,11 @@
 import argparse, subprocess, sys, glob
 
+def form(f):
+	std = "{:4.2f}".format(f)
+	if len(std) > 7:
+		return "{:.1E}".format(f)
+	return std
+
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser(description="Generate some inputs")
 	parser.add_argument("-b", "--benchmark", action="store_true", help="If specified, runs existing input files (deletes naive and ignores other args)")
@@ -55,10 +61,16 @@ if __name__ == "__main__":
 	v.sort(key=lambda x:x[1])
 	v = [(v[i], v[i+1]) for i in range(0, len(v), 2)]
 	for o, n in v:
-		d, w, t = round(float(o[7].split(b' ')[-1][:-1]), 3), round(float(o[8].split(b' ')[-1][:-1]), 3), round(float(o[9].split(b' ')[-1][:-1]), 3)
+		# limited to 7 digits
+
+		d, w, t = float(o[7].split(b' ')[-1][:-1]), float(o[8].split(b' ')[-1][:-1]), float(o[9].split(b' ')[-1][:-1])
+		d, w, t = form(d), form(w), form(t)
 		print(o[1].decode("utf-8").split(" ")[1] + "     ", "Drive:", d, "Walk:", w, "Total:", t, sep='\t')
-		d, w, t = round(float(n[7].split(b' ')[-1][:-1]), 3), round(float(n[8].split(b' ')[-1][:-1]), 3), round(float(n[9].split(b' ')[-1][:-1]), 3)
+
+		d, w, t = float(n[7].split(b' ')[-1][:-1]), float(n[8].split(b' ')[-1][:-1]), float(n[9].split(b' ')[-1][:-1])
+		d, w, t = form(d), form(w), form(t)
 		print(n[1].decode("utf-8").split(" ")[1], "Drive:", d, "Walk:", w, "Total:", t, sep='\t')
+
 		print()
 		
 	print("Done!\n")
