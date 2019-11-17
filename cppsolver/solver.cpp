@@ -1,52 +1,31 @@
 #include <iostream>
 #include <vector>
 #include <set>
+#include <unordered_map>
 #include "car.h"
 
 using namespace std;
+
+template <>
+struct std::hash<Car> {
+    size_t operator()(const Car& c) const {
+        return hash<int>()(c.loc);
+    }
+};
 
 int main() {
 	auto start = chrono::high_resolution_clock::now();
 
 	set<int> a, b;
 	a.insert(1); a.insert(2); a.insert(3);
-	b.insert(4); b.insert(5); b.insert(6);
+	b.insert(1); b.insert(2); b.insert(3); b.insert(4); b.insert(5);
 
-	Car c(5, a, b);
-	Car d(10, a, b);
+	Car c(5, a, a);
+	Car d(5, b, b);
 
-	// cout << (c == d) << endl;
+	cout << (c == d) << endl;
 
-	a.insert(9); b.insert(9);
-	c.tas.insert(0); c.reached.insert(0);
-
-	for (auto i = a.begin(); i != a.end(); i++) {
-		cout << *i << " ";
-	}
-	cout << endl;
-	for (auto i = b.begin(); i != b.end(); i++) {
-		cout << *i << " ";
-	}
-	cout << endl;
-
-	for (auto i = c.tas.begin(); i != c.tas.end(); i++) {
-		cout << *i << " ";
-	}
-	cout << endl;
-	for (auto i = c.reached.begin(); i != c.reached.end(); i++) {
-		cout << *i << " ";
-	}
-	cout << endl;
-
-	for (auto i = d.tas.begin(); i != d.tas.end(); i++) {
-		cout << *i << " ";
-	}
-	cout << endl;
-	for (auto i = d.reached.begin(); i != d.reached.end(); i++) {
-		cout << *i << " ";
-	}
-	cout << endl;
-
+	cout << hash<Car>()(c) << endl;
 
 	auto end = chrono::high_resolution_clock::now();
 	auto duration = chrono::duration_cast<chrono::milliseconds>(end - start);

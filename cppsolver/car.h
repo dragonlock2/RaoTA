@@ -4,15 +4,16 @@
 #include <vector>
 #include <set>
 
-using namespace std;
-
 class Car {
 	public:
 		int loc;
-		set<int> tas;
-		set<int> reached;
+		std::set<int> tas;
+		std::set<int> reached;
 
-		Car(int l, set<int> t, set<int> r);
+		Car(int l, std::set<int> t, std::set<int> r);
+
+		bool operator==(Car other) const;
+		friend std::ostream& operator<<(std::ostream &strm, const Car &c);
 };
 
 #endif
