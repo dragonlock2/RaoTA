@@ -1,10 +1,8 @@
 #include <iostream>
+#include <vector>
+#include <set>
 #include "car.h"
 
-Car::Car(int n) : x(n) {
-	// nothing yet
-}
+using namespace std;
 
-int Car::getX() {
-	return x;
-}
+Car::Car(int l, set<int> t, set<int> r) : loc(l), tas(t), reached(r) {}
