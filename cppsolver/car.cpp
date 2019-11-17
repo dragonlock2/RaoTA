@@ -6,23 +6,23 @@
 Car::Car(int l, std::set<int> t, std::set<int> r) : loc(l), tas(t), reached(r) {} // It auto makes copies :)
 
 bool Car::operator==(Car other) const {
-	return loc == other.loc;
+	return loc == other.loc && tas == other.tas;
 }
 
 std::ostream& operator<<(std::ostream &strm, const Car &c) {
 	strm << "Car(" << c.loc << ", {";
 	for (auto i = c.tas.begin(); i != c.tas.end(); i++) {
-		strm << *i << " ";
+		strm << *i << ", ";
 	}
 	if (!c.tas.empty()) {
-		strm << "\b";
+		strm << "\b\b";
 	}
 	strm << "}, {";
 	for (auto i = c.reached.begin(); i != c.reached.end(); i++) {
-		strm << *i << " ";
+		strm << *i << ", ";
 	}
 	if (!c.reached.empty()) {
-		strm << "\b";
+		strm << "\b\b";
 	}
 	strm << "})";
 	return strm;

@@ -1,10 +1,11 @@
 CC=g++
-FLAGS=-std=c++17
+FLAGS=-std=c++17 -O3
 
 all:
-	$(CC) -O3 -c -o solver.o solver.cpp $(FLAGS)
-	$(CC) -O3 -c -o car.o car.cpp $(FLAGS)
-	$(CC) -O3 -o solver solver.o car.o $(FLAGS)
+	$(CC) -c -o solver.o solver.cpp $(FLAGS)
+	$(CC) -c -o car.o car.cpp $(FLAGS)
+	$(CC) -c -o pair.o pair.cpp $(FLAGS)
+	$(CC) -o solver solver.o car.o pair.o $(FLAGS)
 	rm *.o
 
 clean:
