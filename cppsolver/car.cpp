@@ -1,9 +1,22 @@
 #include <iostream>
 #include <vector>
 #include <set>
+
 #include "car.h"
 
+int Car::G = 0;
+int Car::all_paths = 0;
+int Car::start_loc = 0;
+
 Car::Car(int l, std::set<int> t, std::set<int> r) : loc(l), tas(t), reached(r) {} // It auto makes copies :)
+
+std::vector<std::pair<Car, double>> Car::neighbors() {
+	std::vector<std::pair<Car, double>> v;
+	Car c(5, std::set<int>(), std::set<int>());
+	v.push_back(std::pair<Car, double>(c, G));
+	v.push_back(std::pair<Car, double>(c, start_loc));
+	return v;
+}
 
 bool Car::operator==(Car other) const {
 	return loc == other.loc && tas == other.tas;

@@ -8,13 +8,17 @@
 
 class Car {
 	public:
+		static int G; // change to graph eventually
+		static int all_paths; // change to something else
+		static int start_loc;
+
 		int loc;
 		std::set<int> tas;
 		std::set<int> reached;
 
 		Car(int l, std::set<int> t, std::set<int> r);
 
-		//TODO still need to make neighbors()
+		std::vector<std::pair<Car, double>> neighbors();
 
 		bool operator==(Car other) const;
 		friend std::ostream& operator<<(std::ostream &strm, const Car &c);

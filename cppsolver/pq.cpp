@@ -6,11 +6,10 @@ FibPQ::FibPQ() {}
 
 // Also replaces what's currently inside PQ
 void FibPQ::pushOrChangeKey(Car c, double v) {
-	fibpq_pair p(c, v);
 	if (mapcth.find(c) == mapcth.end()) {
-		mapcth[c] = pq.push(p);
+		mapcth[c] = pq.push(fibpq_pair(c, v));
 	} else {
-		pq.update(mapcth[c], p);
+		pq.update(mapcth[c], fibpq_pair(c, v));
 	}
 }
 

@@ -3,6 +3,7 @@
 
 #include <boost/heap/fibonacci_heap.hpp>
 #include <unordered_map>
+
 #include "car.h"
 
 // Wrapper class for Fibonnaci Heap, can probably make this a template one day

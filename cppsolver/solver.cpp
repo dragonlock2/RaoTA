@@ -2,38 +2,39 @@
 #include <vector>
 #include <set>
 #include <unordered_map>
+
 #include "car.h"
 #include "pq.h"
 
 using namespace std;
 
+// If necessary, can probs use uint8_t for indices
+
 int main(int argc, char** argv) {
 	auto start = chrono::high_resolution_clock::now();
 
-	for (int i = 0; i < argc; i++) {
-		cout << argv[i] << endl;
+	// Process args and build graph
+	Car::start_loc = atoi(argv[1]); // Home
+	int num_tas = atoi(argv[2]); // Number TAs
+	set<int> tas; // Set to hold all initial TAs
+	for (int i = 0; i < num_tas; i++) {
+		tas.insert(atoi(argv[3+i]));
+	}
+	int num_locs = atoi(argv[3+num_tas]);
+
+	cout << endl;
+	int adjstart = 4 + num_tas;
+	for (int i = 0; i < num_locs; i++) {
+		for (int j = 0; j < num_locs; j++) {
+			char *str = argv[adjstart + i*num_locs + j];
+			if (str[0] != 'x') {
+				double weight = atof(str);
+				cout <<  "Edge: from-" << i << " to-" << j << " w-" << weight << endl;
+			}
+		}
 	}
 
-	set<int> a, b;
-	a.insert(1); a.insert(2); a.insert(3);
-	b.insert(1); b.insert(2); b.insert(3);
-
-	Car c(5, a, b);
-	Car d(5, a, b);
-	Car e(5, a, b);
-	c.reached.insert(4); c.tas.insert(4);
-	d.reached.insert(5); d.tas.insert(5);
-	e.reached.insert(69);
-
-	FibPQ pq;
-	pq.pushOrChangeKey(c, 0.5);
-	pq.pushOrChangeKey(d, 10);
-	pq.pushOrChangeKey(e, -1);
-	pq.pushOrChangeKey(c, 15);
-
-	while (!pq.empty()) {
-		cout << pq.removeMin() << endl;
-	}
+	
 
 	auto end = chrono::high_resolution_clock::now();
 	auto duration = chrono::duration_cast<chrono::milliseconds>(end - start);

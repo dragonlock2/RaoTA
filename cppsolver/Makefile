@@ -10,3 +10,6 @@ all:
 
 clean:
 	rm *.o
+
+test:
+	$(CC) $(FLAGS) -o graphtest graphtest.cpp
