@@ -46,7 +46,7 @@ if __name__ == "__main__":
 			sys.exit(1)
 		print("Done!\n")
 
-	print("Solving inputs... ")
+	print("Solving inputs using " + args.solver + "...")
 	subprocess.run([python, args.solver + "/solver.py", "--all", "inputs", "outputs"])
 	print("Done!\n")
 
