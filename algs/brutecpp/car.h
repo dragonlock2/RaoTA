@@ -3,14 +3,22 @@
 
 #include <vector>
 #include <set>
+#include <boost/graph/adjacency_list.hpp>
+#include <boost/graph/dijkstra_shortest_paths.hpp>
+
+typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS, boost::no_property, boost::property<boost::edge_weight_t, double> > Graph;
+typedef boost::property_map<Graph, boost::edge_weight_t>::type WeightMap;
 
 // Intended for use inside an unordered_map (hash map)
 
 class Car {
 	public:
-		static int G; // change to graph eventually
-		static int all_paths; // change to something else
+		static Graph G;
+		static WeightMap wm;
+		static std::vector<std::vector<double>> all_dists;
+		static std::vector<std::vector<int>> all_pcessors;
 		static int start_loc;
+		static std::set<int> start_tas;
 
 		int loc;
 		std::set<int> tas;
@@ -22,6 +30,9 @@ class Car {
 
 		bool operator==(Car other) const;
 		friend std::ostream& operator<<(std::ostream &strm, const Car &c);
+	private:
+		static std::vector<std::set<int>> powerSet(std::set<int> s);
+		static int intpow(int b, int n);
 };
 
 namespace std {

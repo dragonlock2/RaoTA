@@ -1,7 +1,6 @@
 #include <iostream>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/dijkstra_shortest_paths.hpp>
-#include <boost/graph/floyd_warshall_shortest.hpp>
 
 typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS, boost::no_property, boost::property<boost::edge_weight_t, double> > Graph;
 typedef boost::property_map<Graph, boost::edge_weight_t>::type WeightMap;
@@ -31,7 +30,7 @@ int main() {
     for (auto vi = boost::vertices(G); vi.first != vi.second; vi.first++) { // for each vertex
         int v = *vi.first;
         std::cout << v << " : ";
-        for (auto ei = boost::out_edges(v, G); ei.first != ei.second; ei.first++) { //for each outgoing edge
+        for (auto ei = boost::out_edges(v, G); ei.first != ei.second; ei.first++) { //for each outgoing edge (use boost::adjacent_vertices for just neighbors)
             auto e = *ei.first; // get the edge
             double w = wm[e]; //boost::get(boost::edge_weight_t(), G, e);
             int s = boost::source(e, G);

@@ -8,6 +8,7 @@ def form(f):
 
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser(description="Generate some inputs")
+	parser.add_argument("-s", "--solver", default="algs/brutepython", type=str, help="Folder that contains solver.py for alg to use (default algs/brutepython)")
 	parser.add_argument("-b", "--benchmark", action="store_true", help="If specified, runs existing input files (deletes naive and ignores other args)")
 	parser.add_argument("-t", "--ta_frac", default=0.5, type=float, help="Fraction of total homes that have TAs in them (default 0.5)")
 	parser.add_argument("-e", "--extra_edge_frac", default=0.5, type=float, help="Number of extra edges to add as a fraction of total nodes (default 0.5)")
@@ -46,7 +47,7 @@ if __name__ == "__main__":
 		print("Done!\n")
 
 	print("Solving inputs... ")
-	subprocess.run([python, "solver.py", "--all", "inputs", "outputs"])
+	subprocess.run([python, args.solver + "/solver.py", "--all", "inputs", "outputs"])
 	print("Done!\n")
 
 	print("Solving inputs naively... ", end="")
