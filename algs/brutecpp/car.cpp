@@ -29,7 +29,7 @@ std::vector<std::pair<Car, double>> Car::neighbors() {
 		std::set<node_t> poss_tas = tas; //possible tas left in car after dropoff
 		poss_tas.erase(loc); //always dropoff ta that lives at current location
 
-		for (auto& pd: powerSet(tas)) { //all possible ways have tas left in car
+		for (auto& pd: powerset(tas)) { //all possible ways have tas left in car
 			double cost = 0; // cost of dropoff
 			std::set<node_t> drops;
 			std::set_difference(poss_tas.begin(), poss_tas.end(), pd.begin(), pd.end(), std::inserter(drops, drops.end()));
@@ -51,7 +51,7 @@ std::vector<std::pair<Car, double>> Car::neighbors() {
 	return neighs;
 }
 
-std::vector<std::set<node_t>> Car::powerSet(std::set<node_t> s) {
+std::vector<std::set<node_t>> Car::powerset(std::set<node_t> s) {
 	std::vector<std::set<node_t>> ps(intpow(2, s.size()));
 	for (int i = 0; i < ps.size(); i++) {
 		ps[i] = std::set<node_t>();

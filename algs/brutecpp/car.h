@@ -33,27 +33,21 @@ class Car {
 		bool operator==(Car other) const;
 		friend std::ostream& operator<<(std::ostream &strm, const Car &c);
 	private:
-		static std::vector<std::set<node_t>> powerSet(std::set<node_t> s);
+		static std::vector<std::set<node_t>> powerset(std::set<node_t> s);
 		static int intpow(int b, int n);
 };
 
 namespace std { //TODO improve hashcode
 	template <>
-	struct hash<set<node_t>> {
-		size_t operator()(const set<node_t>& s) const {
-			size_t h = 0;
-			for (auto i: s) {
-				size_t l = hash<node_t>()(i);
-				h ^= l*l*l;
-			}
-			return h*h*h;
-		}
-	};
-	template <>
 	struct hash<Car> {
 	    size_t operator()(const Car& c) const {
-	    	size_t cl = hash<node_t>()(c.loc);
-	        return ((cl*cl*cl) << 32) + hash<set<node_t>>()(c.tas);
+	    	size_t h = 0;
+	    	for (auto i: c.tas) {
+	    		size_t l = i;
+	    		h += l*l*l;
+	    	}
+	    	h += ((size_t)c.loc * (size_t)c.loc) << 29;
+	        return h;
 	    }
 	};
 }
