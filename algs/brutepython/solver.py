@@ -50,7 +50,7 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
             return self.loc == other.loc and self.tas == other.tas # Don't need reached
 
         def __hash__(self):
-            return (self.loc**2 << 32) + sum([hash(l)**3 for l in self.tas])
+            return (self.loc*self.loc << 32) + sum([l*l*l for l in self.tas])
 
         def __str__(self):
             return "Car({}, {}, {})".format(self.loc, self.tas, self.reached)
