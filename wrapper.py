@@ -64,12 +64,16 @@ if __name__ == "__main__":
 	v = [(v[i], v[i+1]) for i in range(0, len(v), 2)]
 	for o, n in v:
 		d, w, t = float(o[7].split(b' ')[-1][:-1]), float(o[8].split(b' ')[-1][:-1]), float(o[9].split(b' ')[-1][:-1])
+		algt = t
 		d, w, t = form(d), form(w), form(t)
 		print(o[1].decode("utf-8").split(" ")[1] + "     ", "Drive:", d, "Walk:", w, "Total:", t, sep='\t')
 
 		d, w, t = float(n[7].split(b' ')[-1][:-1]), float(n[8].split(b' ')[-1][:-1]), float(n[9].split(b' ')[-1][:-1])
+		naivet = t
 		d, w, t = form(d), form(w), form(t)
 		print(n[1].decode("utf-8").split(" ")[1], "Drive:", d, "Walk:", w, "Total:", t, sep='\t')
+
+		print("Percent improvement over naive:", round((naivet-algt)/naivet*100, 3),"\b%")
 
 		print()
 		
