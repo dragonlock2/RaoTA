@@ -55,7 +55,7 @@ def plotGraph():
 
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser(description="Generate some inputs")
-	parser.add_argument("outputfile", type=str, help="File to write toa")
+	parser.add_argument("outputfile", type=str, help="File to write to")
 	parser.add_argument("locations", type=int, help="Number of locations to make")
 	parser.add_argument("TAs", type=int, help="Number of TAs to make")
 	parser.add_argument("extra_edges", type=int, help="Number of extra edges to add on top of making a tree")
