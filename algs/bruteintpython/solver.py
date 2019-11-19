@@ -50,7 +50,7 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
             return self.loc == other.loc and self.tas == other.tas # Don't need reached
 
         def __hash__(self):
-            return (self.loc**2 << 32) + sum([hash(l)**3 for l in self.tas])
+            return (hash(self.loc)**2 << 32) + sum([hash(l)**3 for l in self.tas])
 
         def __str__(self):
             return "Car({}, {}, {})".format(self.loc, self.tas, self.reached)
@@ -87,6 +87,10 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
             return self.loc == starting_car_location and len(self.tas) == 0
 
     # Create graph
+    for i in range(len(adjacency_matrix)):
+        for j in range(len(adjacency_matrix)):
+            if adjacency_matrix[i][j] != 'x':
+                adjacency_matrix[i][j] = int(adjacency_matrix[i][j] * 100000)
     global G # Left here for debugging purposes
     G, _ = adjacency_matrix_to_graph(adjacency_matrix)
 
