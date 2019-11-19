@@ -41,15 +41,17 @@ namespace std {
 		size_t operator()(const set<int>& s) const {
 			size_t h = 0;
 			for (auto i: s) {
-				h += hash<int>()(i);
+				size_t l = hash<int>()(i);
+				h += l*l*l;
 			}
-			return h;
+			return h*h*h;
 		}
 	};
 	template <>
 	struct hash<Car> {
 	    size_t operator()(const Car& c) const {
-	        return hash<int>()(c.loc) + hash<set<int>>()(c.tas);
+	    	size_t cl = hash<int>()(c.loc);
+	        return cl*cl*cl + hash<set<int>>()(c.tas);
 	    }
 	};
 }
