@@ -50,7 +50,7 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
             return self.loc == other.loc and self.tas == other.tas # Don't need reached
 
         def __hash__(self):
-            return hash(self.loc) + sum([hash(l) for l in self.tas])
+            return (hash(self.loc)**2 << 32) + sum([hash(l)**3 for l in self.tas])
 
         def __str__(self):
             return "Car({}, {}, {})".format(self.loc, self.tas, self.reached)
@@ -75,8 +75,8 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
                 tas = self.tas - {self.loc} # If I'm at a TA's home, drop them off
                 pds = [set(pd) for pd in powerset(tas)]
                 pds_costs = [sum([all_paths[self.loc][t] for t in (tas - pd)]) for pd in pds]
-                for n in G.neighbors(self.loc):
-                    for pd, pdc in zip(pds, pds_costs):
+                for pd, pdc in zip(pds, pds_costs):
+                    for n in G.neighbors(self.loc):
                         cost = 2/3 * all_paths[self.loc][n] + pdc
                         car = Car(n, pd, newreached)
                         neighs.append((car, cost))

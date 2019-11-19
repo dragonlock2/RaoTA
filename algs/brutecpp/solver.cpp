@@ -35,7 +35,7 @@ void allPairsDijkstras() {
 	int num_nodes = boost::num_vertices(Car::G);
 	for (int i = 0; i < num_nodes; i++) {
 		Car::all_dists.push_back(vector<double>(num_nodes));
-		Car::all_pcessors.push_back(vector<int>(num_nodes));
+		Car::all_pcessors.push_back(vector<node_t>(num_nodes));
 	}
 	for (int s = 0; s < num_nodes; s++) {
         boost::dijkstra_shortest_paths(Car::G, s, boost::predecessor_map(&Car::all_pcessors[s][0]).distance_map(&Car::all_dists[s][0]));
@@ -53,7 +53,7 @@ int main(int argc, char** argv) {
 	FibPQ pq;
 	unordered_map<Car, Car> paths;
 	unordered_map<Car, double> costs;
-	Car startcar(Car::start_loc, Car::start_tas, set<int>());
+	Car startcar(Car::start_loc, Car::start_tas, set<node_t>());
 
 	// Add source point
 	pq.pushOrChangeKey(startcar, 0.0);
@@ -91,14 +91,14 @@ int main(int argc, char** argv) {
 
 	// Reconstruct paths
 	vector<Car> cycleCar;
-	Car endcar(Car::start_loc, set<int>(), set<int>());
+	Car endcar(Car::start_loc, set<node_t>(), set<node_t>());
 	Car *currcarptr = &endcar;
 	while (!(*currcarptr == startcar)) {
 		currcarptr = &paths.find(*currcarptr)->second; 
 		cycleCar.push_back(*currcarptr);
 	}
 	reverse(cycleCar.begin(), cycleCar.end());
-	vector<int> pathToEnd;
+	vector<node_t> pathToEnd;
 	int src = cycleCar.back().loc;
 	int curr = Car::start_loc;
 	while (curr != src) {
@@ -107,16 +107,16 @@ int main(int argc, char** argv) {
 	}
 	reverse(pathToEnd.begin(), pathToEnd.end());
 	for (auto& i: pathToEnd) {
-		cycleCar.push_back(Car(i, set<int>(), set<int>()));
+		cycleCar.push_back(Car(i, set<node_t>(), set<node_t>()));
 	}
 
 	// Convert to correct format
-	vector<int> listlocs;
-	unordered_map<int, set<int>> listdropoffs;
+	vector<node_t> listlocs;
+	unordered_map<node_t, set<node_t>> listdropoffs;
 	for (auto cp = cycleCar.begin(); cp != cycleCar.end(); cp++) {
 		listlocs.push_back(cp->loc);
 		if (cp != cycleCar.end() - 1) {
-			set<int> drops;
+			set<node_t> drops;
 			set_difference(cp->tas.begin(), cp->tas.end(), (cp+1)->tas.begin(), (cp+1)->tas.end(), inserter(drops, drops.end()));
 			if (drops.size() > 0) {
 				listdropoffs[cp->loc] = drops;
@@ -129,13 +129,13 @@ int main(int argc, char** argv) {
 
 	// Print out
 	for (auto& i: listlocs) {
-		cout << i << " ";
+		cout << int(i) << " ";
 	}
 	cout << endl;
 	for (auto& i: listdropoffs) {
-		cout << i.first << " ";
+		cout << int(i.first) << " ";
 		for (auto& d: i.second) {
-			cout << d << " ";
+			cout << int(d) << " ";
 		}
 		cout << endl;
 	}

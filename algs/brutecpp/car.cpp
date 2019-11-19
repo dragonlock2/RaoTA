@@ -8,11 +8,11 @@
 Graph Car::G;
 WeightMap Car::wm;
 std::vector<std::vector<double>> Car::all_dists;
-std::vector<std::vector<int>> Car::all_pcessors;
-int Car::start_loc;
-std::set<int> Car::start_tas;
+std::vector<std::vector<node_t>> Car::all_pcessors;
+node_t Car::start_loc;
+std::set<node_t> Car::start_tas;
 
-Car::Car(int l, std::set<int> t, std::set<int> r) : loc(l), tas(t), reached(r) {} // It auto makes copies :)
+Car::Car(node_t l, std::set<node_t> t, std::set<node_t> r) : loc(l), tas(t), reached(r) {} // It auto makes copies :)
 
 std::vector<std::pair<Car, double>> Car::neighbors() {
 	std::vector<std::pair<Car, double>> neighs;
@@ -23,15 +23,15 @@ std::vector<std::pair<Car, double>> Car::neighbors() {
 			neighs.push_back(std::pair<Car, double>(Car(boost::target(e, G), tas, reached), wm[e] * 2/3));
 		}
 	} else {
-		std::set<int> newreached = reached;
+		std::set<node_t> newreached = reached;
 		newreached.insert(loc);
 
-		std::set<int> poss_tas = tas; //possible tas left in car after dropoff
+		std::set<node_t> poss_tas = tas; //possible tas left in car after dropoff
 		poss_tas.erase(loc); //always dropoff ta that lives at current location
 
 		for (auto& pd: powerSet(tas)) { //all possible ways have tas left in car
 			double cost = 0; // cost of dropoff
-			std::set<int> drops;
+			std::set<node_t> drops;
 			std::set_difference(poss_tas.begin(), poss_tas.end(), pd.begin(), pd.end(), std::inserter(drops, drops.end()));
 			for (auto& t: drops) {
 				cost += all_dists[loc][t];
@@ -51,10 +51,10 @@ std::vector<std::pair<Car, double>> Car::neighbors() {
 	return neighs;
 }
 
-std::vector<std::set<int>> Car::powerSet(std::set<int> s) {
-	std::vector<std::set<int>> ps(intpow(2, s.size()));
+std::vector<std::set<node_t>> Car::powerSet(std::set<node_t> s) {
+	std::vector<std::set<node_t>> ps(intpow(2, s.size()));
 	for (int i = 0; i < ps.size(); i++) {
-		ps[i] = std::set<int>();
+		ps[i] = std::set<node_t>();
 	}
 	int i = 0;
 	for (auto item = s.begin(); item != s.end(); item++) {
