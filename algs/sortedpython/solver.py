@@ -112,6 +112,7 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
     paths[startcar] = None
     costs[startcar] = 0
 
+    naivesol = sum([all_paths[starting_car_location][t] for t in list_of_homes])
     inf = float('inf')
 
     # Run Dijkstra's
@@ -125,8 +126,8 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
         for ncar, ncost in car.neighbors():
             # Relax all edges
             ncost += currcost
-            if ncost < costs.setdefault(ncar, inf):
-                pq[ncar] = ncost + heuristic(ncar, starting_car_location) # Conversion to A*
+            if ncost < naivesol and ncost < costs.setdefault(ncar, inf):
+                pq[ncar] = ncost
                 costs[ncar] = ncost
                 paths[ncar] = car
 
@@ -160,10 +161,6 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
     print(" done! Time: {}s".format(t1))
 
     return listlocs, listdropoffs
-
-def heuristic(car, tar):
-    # return 0
-    return 0
                 
 """
 ======================================================================
