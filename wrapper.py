@@ -1,4 +1,4 @@
-import argparse, subprocess, sys, glob
+import argparse, subprocess, sys, glob, os, datetime
 
 def form(f):
 	std = "{:4.2f}".format(f)
@@ -13,6 +13,7 @@ if __name__ == "__main__":
 	parser.add_argument("-t", "--ta_frac", default=0.5, type=float, help="Fraction of total homes that have TAs in them (default 0.5)")
 	parser.add_argument("-e", "--extra_edge_frac", default=0.5, type=float, help="Number of extra edges to add as a fraction of total nodes (default 0.5)")
 	parser.add_argument("-n", "--nodes", default=[10], type=int, nargs="*", help="Number of nodes for each test case (default 10)")
+	parser.add_argument("--archive", action="store_true", help="If specified, archives the input and output files")
 	args = parser.parse_args()
 
 	python = sys.executable
@@ -83,6 +84,20 @@ if __name__ == "__main__":
 	naives = glob.glob("./inputs/*naive*") + glob.glob("./outputs/*naive*")
 	if naives:
 		subprocess.run(["rm", *naives])
+
+	if args.archive:
+		print("Archiving input and output files...", end="")
+		sys.stdout.flush()
+
+		pref = os.path.basename(os.path.abspath(args.solver)) + datetime.datetime.now().strftime("_%m-%d-%Y_%H%M%S_")
+		for f in glob.glob("./inputs/*.in"):
+			newname = pref + os.path.basename(f)
+			subprocess.run(["cp", f, "archive-inputs/"+newname])
+		for f in glob.glob("./outputs/*.out"):
+			newname = pref + os.path.basename(f)
+			subprocess.run(["cp", f, "archive-outputs/"+newname])
+
+		print("Done!\n")
 
 
 
