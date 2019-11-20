@@ -22,7 +22,7 @@ sudo apt install libboost-all-dev # if on Linux
 brew install boost # if on MacOS
 ```
 
-The main script to run is wrapper.py. It performs the entire workflow of generating inputs, validating them, solving them with the chosen algorithm, solving them naively, and finally validating the outputs and displaying results. It also archives the input and output files. Run the below command for a basic test.
+The main script to run is wrapper.py. It performs the entire workflow of generating inputs, validating them, solving them with the chosen algorithm, solving them naively, and finally validating the outputs and displaying results. Optionally, it also archives the input and output files. Run the below command for a basic test.
 
 ```
 python3 wrapper.py -n 5 10 15
