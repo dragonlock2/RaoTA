@@ -12,6 +12,9 @@ from student_utils import *
   Complete the following function.
 ======================================================================
 """
+
+TA_FRACTION = 0.7
+
 def plotGraph():
     pos = nx.spring_layout(G)
     labels = nx.get_edge_attributes(G,'weight')
@@ -23,8 +26,8 @@ def plotGraph():
 
 def sortedset(tas, loc): # NOTE: this doesn't include empty
     t = list(tas)
-    t.sort(key=lambda x: all_paths[loc][x])
-    return [set(t[:i+1]) for i in range(1,int(len(t)*0.7))]
+    t.sort(key=lambda x: all_paths[loc][x], reverse=True)
+    return [set(t[:i+1]) for i in range(1,int(len(t)*TA_FRACTION))]
 
 def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_matrix, params=[]):
     """
