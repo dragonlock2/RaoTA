@@ -7,7 +7,7 @@ def form(f):
 	return std
 
 if __name__ == "__main__":
-	parser = argparse.ArgumentParser(description="Generate some inputs")
+	parser = argparse.ArgumentParser(description="Wraps the whole testing workflow in one simple script")
 	parser.add_argument("-s", "--solver", default="algs/brutepython", type=str, help="Folder that contains solver.py for alg to use (default algs/brutepython)")
 	parser.add_argument("-b", "--benchmark", action="store_true", help="If specified, runs existing input files (deletes naive and ignores other args)")
 	parser.add_argument("-t", "--ta_frac", default=0.5, type=float, help="Fraction of total homes that have TAs in them (default 0.5)")
@@ -89,13 +89,7 @@ if __name__ == "__main__":
 		print("Archiving input and output files...", end="")
 		sys.stdout.flush()
 
-		pref = os.path.basename(os.path.abspath(args.solver)) + datetime.datetime.now().strftime("_%m-%d-%Y_%H%M%S_")
-		for f in glob.glob("./inputs/*.in"):
-			newname = pref + os.path.basename(f)
-			subprocess.run(["cp", f, "archive-inputs/"+newname])
-		for f in glob.glob("./outputs/*.out"):
-			newname = pref + os.path.basename(f)
-			subprocess.run(["cp", f, "archive-outputs/"+newname])
+		subprocess.run([python, "archive.py", args.solver])
 
 		print("Done!\n")
 
