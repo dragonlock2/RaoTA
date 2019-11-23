@@ -77,7 +77,11 @@ if __name__ == "__main__":
 	# Now add a bunch of extra edges
 	ps = set(pts.keys())
 	i = 0
-	while i < args.extra_edges:
+
+	maxedges = args.locations*(args.locations - 1)//2 # n(n-1)/2
+	maxextraedges = maxedges - (args.locations - 1) # max - (n-1)
+
+	while i < min(maxextraedges, args.extra_edges):
 		p1, p2 = r.sample(ps, 2)
 		if not G.has_edge(p1, p2):
 			G.add_edge(p1, p2, weight=Point.distance(pts[p1], pts[p2]) + Point.OFFSET)

@@ -1,4 +1,5 @@
 .DS_Store
+*.o
 *.class
 *.png
 inputs/*.in
