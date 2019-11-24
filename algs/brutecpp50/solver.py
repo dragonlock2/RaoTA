@@ -12,18 +12,6 @@ from student_utils import *
   Complete the following function.
 ======================================================================
 """
-def plotGraph():
-    pos = nx.spring_layout(G)
-    labels = nx.get_edge_attributes(G,'weight')
-    nx.draw_networkx_nodes(G, pos, node_color='c')
-    nx.draw_networkx_edges(G, pos)
-    nx.draw_networkx_labels(G, pos)
-    nx.draw_networkx_edge_labels(G,pos,edge_labels=labels)
-    plt.show()
-
-def powerset(iterable): # NOTE: this doesn't include empty
-    s = list(iterable)
-    return chain.from_iterable(combinations(s, r) for r in range(1,len(s)+1))
 
 def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_matrix, params=[]):
     """
@@ -45,7 +33,7 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
     starting_car_location = list_of_locations.index(starting_car_location)
 
     # C++ caller
-    a = ["algs/_dep_brutecpp/solver"]
+    a = ["algs/brutecpp50/solver"]
     a.append(str(starting_car_location))
     a.append(str(len(list_of_homes)))
     a.extend([str(i) for i in list_of_homes])
@@ -53,7 +41,7 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
     for row in adjacency_matrix:
         for elem in row:
             a.append(str(elem))
-    p = subprocess.run(a, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    p = subprocess.run(a, stdout=subprocess.PIPE)
 
     # Process output
     info = p.stdout.split(b"\n");
@@ -67,10 +55,6 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
     print(" done! Time: {}s".format(t1))
 
     return listlocs, listdropoffs
-
-def heuristic(car, tar):
-    # return 0
-    return 0
                 
 """
 ======================================================================

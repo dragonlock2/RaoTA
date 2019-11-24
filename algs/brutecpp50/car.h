@@ -1,43 +1,35 @@
 #ifndef CAR_H
 #define CAR_H
 
-#include <vector>
+#include "globals.h"
+#include "graph.h"
 
-#define LOC_BITS 6
-#define LOC_OFFSET 58 //=64-6
-
-typedef uint64_t carid_t; //max 58 locations, index 0-57
-typedef uint64_t reach_t;
-typedef uint8_t node_t;
+extern unique_ptr<Graph> G;
 
 class Car {
 	public:
 		static node_t startloc;
 		static carid_t startid;
 		static carid_t doneid;
+		static uint32_t num_neighs; //if above 2^32 neighbors, probs not good
+		static vector<Car> neighs; //reduce amount of allocation we do
+		static void init(node_t sloc, vector<node_t> *tas);
 
 		carid_t cid;
 		reach_t rec;
+		weight_t cost; //Cars are identified by carids, so Car object used for PQs simplifies things
 
-		Car(carid_t cid, reach_t rec);
+		Car(carid_t cid, reach_t rec, weight_t way);
 
-		bool operator==(Car other) const;
+		void neighbors() const;
 
-		void neighbors(); //TODO
+		bool operator<(const Car& other) const;
 
 		//Debug
-		Car(node_t loc, std::vector<node_t> *tas, std::vector<node_t> *reached);
-		friend std::ostream& operator<<(std::ostream &strm, const Car &c);
+		Car(node_t loc, vector<node_t> *tas, vector<node_t> *reached, weight_t weight);
+		friend ostream& operator<<(ostream &strm, const Car &c);
 };
 
-namespace std {
-	template <>
-	struct hash<Car> {
-	    size_t operator()(const Car& c) const {
-	    	//TODO improve this
-	    	return c.cid;
-	    }
-	};
-}
+typedef priority_queue<Car> CarPQ;
 
 #endif

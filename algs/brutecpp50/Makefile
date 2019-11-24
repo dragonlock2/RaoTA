@@ -1,7 +1,7 @@
 CC=g++
 FLAGS=-std=c++17 -O3
 
-OBJECTS=car.o
+OBJECTS=car.o graph.o
 
 solver: solver.o $(OBJECTS)
 	$(CC) $(FLAGS) -o solver solver.o $(OBJECTS)
