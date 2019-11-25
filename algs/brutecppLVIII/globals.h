@@ -6,6 +6,7 @@
 #include <queue>
 #include <unordered_map>
 #include <deque>
+#include <memory>
 
 using namespace std;
 
