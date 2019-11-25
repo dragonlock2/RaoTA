@@ -20,45 +20,45 @@ if __name__ == "__main__":
 
 	if args.benchmark:
 		# remove old naive files and outputs
-		olds = glob.glob("./inputs/*naive*") + glob.glob("./outputs/*.out")
+		olds = glob.glob("libs/inputs/*naive*") + glob.glob("libs/outputs/*.out")
 		if olds:
 			subprocess.run(["rm", *olds])
-		args.nodes = len(glob.glob("./inputs/*.in"))*[0]
+		args.nodes = len(glob.glob("libs/inputs/*.in"))*[0]
 		print()
 	else:
 		print("Deleting old inputs/outputs...", end="")
 		sys.stdout.flush()
-		subprocess.run(["rm imgs/*.png"], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-		subprocess.run(["rm inputs/*.in"], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-		subprocess.run(["rm outputs/*.out"], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+		subprocess.run(["rm libs/imgs/*.png"], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+		subprocess.run(["rm libs/inputs/*.in"], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+		subprocess.run(["rm libs/outputs/*.out"], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 		print("Done!\n")
 
 		print("Generating inputs... ", end="")
 		sys.stdout.flush() # aiya didn't realize this before
 		for n in args.nodes:
-			subprocess.run([python, "inputgen.py", "inputs/" + str(n) + ".in", str(n), str(int(n*args.ta_frac)), str(int(n*args.extra_edge_frac))])
+			subprocess.run([python, "libs/inputgen.py", "libs/inputs/" + str(n) + ".in", str(n), str(int(n*args.ta_frac)), str(int(n*args.extra_edge_frac))])
 		print("Done!\n")
 
 		print("Validating inputs... ", end="")
 		sys.stdout.flush()
-		p = subprocess.run([python, "input_validator.py", "--all", "inputs"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+		p = subprocess.run([python, "libs/input_validator.py", "--all", "libs/inputs"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 		if len(p.stdout.split(b'\n')) > len(args.nodes) * 4 + 1:
 			print("Uh-oh! Something bad happened :(")
 			sys.exit(1)
 		print("Done!\n")
 
 	print("Solving inputs using " + args.solver + "...")
-	subprocess.run([python, args.solver + "/solver.py", "--all", "inputs", "outputs"])
+	subprocess.run([python, args.solver + "/solver.py", "--all", "libs/inputs", "libs/outputs"])
 	print("Done!\n")
 
 	print("Solving inputs naively... ", end="")
 	sys.stdout.flush()
-	subprocess.run([python, "naivesolver.py"])
+	subprocess.run([python, "libs/naivesolver.py"])
 	print("Done!\n")
 
 	print("Validating outputs...\n")
 	sys.stdout.flush()
-	p = subprocess.run([python, "output_validator.py", "--all", "inputs", "outputs"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	p = subprocess.run([python, "libs/output_validator.py", "--all", "libs/inputs", "libs/outputs"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 	v = p.stdout.split(b'\n')
 	v = [v[11*i:11*(i+1)] for i in range(2*len(args.nodes))]
 	v.sort(key=lambda x:x[1])
@@ -81,7 +81,7 @@ if __name__ == "__main__":
 	print("Done!\n")
 
 	# delete naive files to avoid clutter
-	naives = glob.glob("./inputs/*naive*") + glob.glob("./outputs/*naive*")
+	naives = glob.glob("libs/inputs/*naive*") + glob.glob("libs/outputs/*naive*")
 	if naives:
 		subprocess.run(["rm", *naives])
 
@@ -89,7 +89,7 @@ if __name__ == "__main__":
 		print("Archiving input and output files...", end="")
 		sys.stdout.flush()
 
-		subprocess.run([python, "archive.py", args.solver])
+		subprocess.run([python, "libs/archive.py", args.solver])
 
 		print("Done!\n")
 

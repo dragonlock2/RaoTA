@@ -1,7 +1,6 @@
 .DS_Store
 *.o
-*.class
-*.png
-inputs/*.in
-outputs/*.out
 *.pyc
+libs/imgs/*.png
+libs/inputs/*.in
+libs/outputs/*.out

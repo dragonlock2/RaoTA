@@ -41,7 +41,7 @@ def plotGraph():
     nx.draw_networkx_nodes(G, pos, node_color=cmap)
     nx.draw_networkx_edges(G, pos)
     nx.draw_networkx_labels(G, pos)
-    plt.savefig("imgs/" + str(args.locations) + ".png")
+    plt.savefig("libs/imgs/" + str(args.locations) + ".png")
     plt.show()
 
 if __name__ == "__main__":

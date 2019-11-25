@@ -33,7 +33,7 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
     starting_car_location = list_of_locations.index(starting_car_location)
 
     # C++ caller
-    a = ["algs/brutecpp50/solver"]
+    a = ["algs/brutecppLVIII/solver"]
     a.append(str(starting_car_location))
     a.append(str(len(list_of_homes)))
     a.extend([str(i) for i in list_of_homes])

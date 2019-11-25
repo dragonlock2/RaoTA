@@ -1,11 +1,11 @@
 import glob, subprocess
 
 # delete old naive files first
-naives = glob.glob("./inputs/*naive*") + glob.glob("./outputs/*naive*")
+naives = glob.glob("libs/inputs/*naive*") + glob.glob("libs/outputs/*naive*")
 if naives:
 	subprocess.run(["rm", *naives])
 
-for filename in glob.glob("inputs/*.in"):
+for filename in glob.glob("libs/inputs/*.in"):
 	# read file
 	f = open(filename, 'r')
 
@@ -18,8 +18,8 @@ for filename in glob.glob("inputs/*.in"):
 	subprocess.run(["cp", filename, filename[:-3] + "naive.in"])
 
 	# write file
-	name = filename.split("/")[1][:-3]
-	f = open("outputs/" + name + "naive.out", 'w')
+	name = filename.split("/")[-1][:-3]
+	f = open("libs/outputs/" + name + "naive.out", 'w')
 
 	f.write(home)
 	f.write("1\n")
