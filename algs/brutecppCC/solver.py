@@ -33,7 +33,7 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
     starting_car_location = list_of_locations.index(starting_car_location)
 
     # C++ caller
-    a = ["algs/sortedcppCC/solver"]
+    a = ["algs/brutecppCC/solver"]
     a.append(str(starting_car_location))
     a.append(str(len(list_of_homes)))
     a.extend([str(i) for i in list_of_homes])
@@ -42,13 +42,13 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
         for elem in row:
             a.append(str(elem))
 
-    f = open("algs/sortedcppCC/in.txt", "w")
+    f = open("algs/brutecppCC/in.txt", "w")
     f.write(' '.join(a))
     f.close()
 
     p = subprocess.run(a[:1], stdout=subprocess.PIPE)
 
-    subprocess.run("rm algs/sortedcppCC/in.txt", shell=True)
+    subprocess.run("rm algs/brutecppCC/in.txt", shell=True)
 
     # Process output
     info = p.stdout.split(b"\n");

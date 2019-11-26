@@ -12,8 +12,8 @@ from student_utils import *
   Complete the following function.
 ======================================================================
 """
-
-TA_FRACTION = 0.7
+TA_START = 0.55
+TA_FRACTION = 0.6
 
 def plotGraph():
     pos = nx.spring_layout(G)
@@ -27,7 +27,7 @@ def plotGraph():
 def sortedset(tas, loc): # NOTE: this doesn't include empty
     t = list(tas)
     t.sort(key=lambda x: all_paths[loc][x], reverse=True)
-    return [set(t[:i+1]) for i in range(1,int(len(t)*TA_FRACTION))]
+    return [set(t[:i+1]) for i in range(max(1, int(len(t)*TA_START)),int(len(t)*TA_FRACTION))]
 
 def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_matrix, params=[]):
     """
@@ -126,7 +126,7 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
         for ncar, ncost in car.neighbors():
             # Relax all edges
             ncost += currcost
-            if ncost < naivesol and ncost < costs.setdefault(ncar, inf):
+            if ncost <= naivesol and ncost < costs.setdefault(ncar, inf):
                 pq[ncar] = ncost
                 costs[ncar] = ncost
                 paths[ncar] = car

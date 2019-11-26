@@ -7,7 +7,7 @@ unique_ptr<Graph> G;
 void processArgs() {
 	// Read inputs
 	vector<string> argv;
-	ifstream file("algs/sortedcppCC/in.txt");
+	ifstream file("algs/brutecppCC/in.txt");
 	if (!file) {
 		cerr << "No input file found!" << endl;
 		exit(1);
