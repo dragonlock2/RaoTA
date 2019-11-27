@@ -2,7 +2,7 @@ import sys, glob, subprocess, argparse, os, shutil
 sys.path.append("libs/")
 import input_validator as iv
 
-EX_CUT = 0.25
+EX_CUT = 0.2
 foldernames = ["50", "100", "200", "other", "bruteforceable"]
 
 def getAttrs(filename):
@@ -14,23 +14,25 @@ def getAttrs(filename):
     return num_of_locations, num_houses, exfrac
 
 def moveFile(filename, folder, exfrac, excut=EX_CUT):
-    if exfrac <= EX_CUT:
+    if exfrac == 0:
+        shutil.move(filename, folder + "/trees")
+    elif exfrac <= EX_CUT:
         shutil.move(filename, folder + "/treeish")
-        os.mkdir(folder + "/treeish/" + f[:-3])
     else:
         shutil.move(filename, folder + "/tspable")
-        os.mkdir(folder + "/tspable/" + f[:-3])
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Sorts input folder into output folder")
     parser.add_argument("-i", "--infolder",default="inputs/", type=str, help="Folder with *.in files")
-    parser.add_argument("-o", "--outfolder", default="orginout/", type=str, help="Folder to sort into")
+    parser.add_argument("-o", "--outfolder", default="orgin/", type=str, help="Folder to sort into")
     args = parser.parse_args()
 
     print("Removing old files in {}. ".format(args.outfolder), end="")
     input("Press enter to continue...")
     shutil.rmtree(args.outfolder)
     os.mkdir(args.outfolder)
+    f = open(args.outfolder + "/.gitkeep", "w")
+    f.close()
     for f in glob.glob(args.infolder + "/*.in"):
         shutil.copy(f, args.outfolder)
 
@@ -39,6 +41,7 @@ if __name__ == "__main__":
     os.chdir(args.outfolder)
     for fn in foldernames:
         os.mkdir(fn)
+        os.mkdir(fn + "/trees")
         os.mkdir(fn + "/tspable")
         os.mkdir(fn + "/treeish")
 
@@ -50,7 +53,7 @@ if __name__ == "__main__":
             moveFile(f, "100", exfrac)
         elif numlocs == 200 and numtas == 100:
             moveFile(f, "200", exfrac)
-        elif numtas <= 12:
+        elif numtas <= 15:
             moveFile(f, "bruteforceable", exfrac, 0.6)
         else:
             moveFile(f, "other", exfrac)

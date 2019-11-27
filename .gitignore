@@ -4,5 +4,5 @@
 libs/imgs/*.png
 libs/inputs/*.in
 libs/outputs/*.out
-orginout/*
+orgin/*
 !.gitkeep

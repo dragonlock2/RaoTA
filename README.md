@@ -12,11 +12,16 @@ TODO
 
 ### bigsolve.py
 
-TODO
+This script is used to run a specified algorithm on a folder of inputs. It automatically moves outputs to the output folder if it is better than the existing output (or if there is no output existing). Try the following:
 
-### analyze.py
+```
+python3 sorter.py
+python3 bigsolve.py algs/brutecppCC orgin/bruteforceable/trees outputs -t 20
+```
 
-TODO
+### sorter.py
+
+This script sorts all the inputs/ based on certain criteria into orginout/. Mainly, it is used to sort inputs by size and completeness. It also maintains separate folders for bruteforceable inputs and inputs that don't maximize the given limits. This script can be run without arguments.
 
 ### benchmark.py
 
@@ -38,6 +43,6 @@ python3 graphvis.py inputs
 
 To move onto the next graph, just click or press a key while in the matplotlib image. To stop early, go to your terminal and issue a KeyboardInterrupt. Then close the matplotlib plot.
 
-### sorter.py
+### checkout.py
 
-This script sorts all the inputs/ based on certain criteria into orginout/. Mainly, it is used to sort inputs by size and completeness. It also maintains separate folders for bruteforceable inputs and inputs that don't maximize the given limits. This script can be run without arguments.
+This script prints out all files that we don't have a solution to yet. Run without arguments.

@@ -30,7 +30,6 @@ if __name__ == "__main__":
 			sys.stdout.flush()
 			subprocess.run(["python3", "libs/inputgen.py", "libs/inputs/test.in", str(args.nodes), str(int(0.5*args.nodes)), str(int(e*args.nodes))])
 
-
 			subprocess.run(["python3", "algs/brutecppLVIII/solver.py", "libs/inputs/test.in", "libs/outputs/"], stdout=subprocess.PIPE)
 			subprocess.run(["python3", "libs/naivesolver.py"])
 

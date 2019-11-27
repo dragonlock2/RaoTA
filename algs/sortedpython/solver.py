@@ -193,17 +193,16 @@ def convertToFile(path, dropoff_mapping, path_to_file, list_locs):
 def solve_from_file(input_file, output_directory, params=[]):
     print('Processing {}...'.format(input_file), end="")
     sys.stdout.flush()
-    
+
     input_data = utils.read_file(input_file)
     num_of_locations, num_houses, list_locations, list_houses, starting_car_location, adjacency_matrix = data_parser(input_data)
     car_path, drop_offs = solve(list_locations, list_houses, starting_car_location, adjacency_matrix, params=params)
 
     basename, filename = os.path.split(input_file)
-    output_filename = utils.input_to_output(filename)
-    output_file = f'{output_directory}/{output_filename}'
     if not os.path.exists(output_directory):
         os.makedirs(output_directory)
-    
+    output_file = utils.input_to_output(input_file, output_directory)
+
     convertToFile(car_path, drop_offs, output_file, list_locations)
 
 
