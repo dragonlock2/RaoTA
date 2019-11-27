@@ -36,7 +36,7 @@ if __name__ == "__main__":
 		print("Generating inputs... ", end="")
 		sys.stdout.flush() # aiya didn't realize this before
 		for n in args.nodes:
-			subprocess.run([python, "libs/inputgen.py", "libs/inputs/" + str(n) + ".in", str(n), str(int(n*args.ta_frac)), str(int(n*args.extra_edge_frac))])
+			subprocess.run([python, "libs/inputgen.py", "libs/inputs/" + str(n) + ".in", str(n), str(int(n*args.ta_frac)), str(int(n*args.extra_edge_frac)), "-v"])
 		print("Done!\n")
 
 		print("Validating inputs... ", end="")
