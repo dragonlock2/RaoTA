@@ -95,7 +95,7 @@ def solve_from_file(input_file, output_directory, params=[]):
     basename, filename = os.path.split(input_file)
     if not os.path.exists(output_directory):
         os.makedirs(output_directory)
-    output_file = utils.input_to_output(input_file)
+    output_file = utils.input_to_output(input_file, output_directory)
 
     convertToFile(car_path, drop_offs, output_file, list_locations)
 

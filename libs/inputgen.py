@@ -50,6 +50,7 @@ if __name__ == "__main__":
 	parser.add_argument("locations", type=int, help="Number of locations to make")
 	parser.add_argument("TAs", type=int, help="Number of TAs to make")
 	parser.add_argument("extra_edges", type=int, help="Number of extra edges to add on top of making a tree")
+	parser.add_argument("-v", "--visualize", action="store_true", help="If specified, displays picture of graph")
 
 	args = parser.parse_args()
 	if (args.TAs > args.locations):
@@ -119,7 +120,8 @@ if __name__ == "__main__":
 
 	utils.write_to_file(args.outputfile, string)
 
-	plotGraph() # TODO remove this if gonna run on some remote server
+	if args.visualize:
+		plotGraph()
 
 
 
