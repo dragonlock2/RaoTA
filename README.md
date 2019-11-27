@@ -5,45 +5,39 @@ Matthew Tran, Kevin An, Joe Zou
 
 [Problem Statement](spec.pdf)
 
-## How To Use
+## How to Use
+TODO
 
-First install some python libraries.
+## Scripts
 
-```
-pip3 install numpy
-pip3 install networkx
-pip3 install matplotlib
-```
+### bigsolve.py
 
-If using C++ algs, might want to install boost libraries.
+TODO
 
-```
-sudo apt install libboost-all-dev # if on Linux
-brew install boost # if on MacOS
-```
+### analyze.py
 
-The main script to run is wrapper.py. It performs the entire workflow of generating inputs, validating them, solving them with the chosen algorithm, solving them naively, and finally validating the outputs and displaying results. Optionally, it also archives the input and output files. Run the below command for a basic test.
+TODO
+
+### benchmark.py
+
+This script is used to record characteristics of optimal solutions for small input. It adds data on the number of nodes, multiplicative factor of extra edges, percent improvement over naive, and percent of total cost that is driving to a csv file which can be analyzed later. Try the following command:
 
 ```
-python3 wrapper.py -n 5 10 15
+python3 benchmark.py -f test.csv 3 15 0 15 1
 ```
 
-For generating inputs, use inputgen.py. To ensure triangle inequality is satisfied, it does this by plotting locations as a bunch of points on a 2D graph and using distances between points to determine edge weights. To ensure connectivity, it first constructs a random tree of all points. Then it adds a bunch of edges to increase complexity. Run below to generate an example input.
+We denote a measure of "tree-ness" as the multplicative factor divided by the total number of nodes. That is, 0 represents being a tree and 1 represents being complete. One thing that's interesting about our data is that as the graph becomes more complete, the percent improvement over the naive gets upper bounded at 30%. Also interesting to note is that the optimal becomes all driving (TSP) when the "tree-ness" factor is above around 0.2.
+
+### graphvis.py
+
+This script is used to view all the .in files in a folder. To run it do:
 
 ```
-python3 inputgen.py inputs/15.in 15 10 10
+python3 graphvis.py inputs
 ```
 
-To learn more about all parameters in each script just run:
+To move onto the next graph, just click or press a key while in the matplotlib image. To stop early, go to your terminal and issue a KeyboardInterrupt. Then close the matplotlib plot.
 
-```
-python3 <script name>.py -h
-```
+### sorter.py
 
-## Algorithms
-
-All algorithms are stored in the algs folder. To run an algorithm, specify the folder in wrapper.py. For example, to run sortedpython, run:
-
-```
-python3 wrapper.py -s algs/sortedpython
-```
+This script sorts all the inputs/ based on certain criteria into orginout/. Mainly, it is used to sort inputs by size and completeness. It also maintains separate folders for bruteforceable inputs and inputs that don't maximize the given limits. This script can be run without arguments.
