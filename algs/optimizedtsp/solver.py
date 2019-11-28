@@ -52,7 +52,7 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
         for i in range(1, len(dropoffs) - 1): #iterate from 1 to len-2
             min_j = -1;
             min_cost = float("inf")
-            for j, _ in all_paths[i].items():
+            for j, _ in all_paths[tsp_solution[i]].items():
                 cost = 2/3 * all_paths[j][dropoffs[i-1]] + all_paths[j][tsp_solution[i]] + 2/3 * all_paths[j][dropoffs[i+1]]
                 if cost < min_cost:
                     min_cost = cost
