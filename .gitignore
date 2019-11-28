@@ -6,3 +6,5 @@ libs/inputs/*.in
 libs/outputs/*.out
 orgin/*
 !.gitkeep
+temp/
+algs/brutecppCC/in.txt
