@@ -19,6 +19,14 @@ python3 sorter.py
 python3 bigsolve.py algs/brutecppCC orgin/bruteforceable/trees outputs -t 20
 ```
 
+### merge.py
+
+This script is used to merge a given set of new outputs with the current set of outputs. Useful for when computation is done on separate computers and have to be merged. A good way to fix this is to move all new outputs into a temp/ folder and repulling the old outputs. Then run the following:
+
+```
+python3 merge.py temp outputs
+```
+
 ### sorter.py
 
 This script sorts all the inputs/ based on certain criteria into orginout/. Mainly, it is used to sort inputs by size and completeness. It also maintains separate folders for bruteforceable inputs and inputs that don't maximize the given limits. This script can be run without arguments.
