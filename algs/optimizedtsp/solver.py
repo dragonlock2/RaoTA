@@ -48,7 +48,7 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
     tsp_solution = tsp(list_of_locations, list_of_homes, starting_car_location, all_paths, solve_timeout)
     tsp_solution = tsp_solution + [tsp_solution[0]]
     dropoffs = tsp_solution.copy()
-    for iters in range(5):
+    for iters in range(len(dropoffs)):
         for i in range(1, len(dropoffs) - 1): #iterate from 1 to len-2
             min_j = -1;
             min_cost = float("inf")
@@ -120,8 +120,6 @@ def solve_from_file(input_file, output_directory, params=[]):
         solve_timeout = 3
     elif '_100' in input_file:
         solve_timeout = 6
-    else:
-        solve_timeout = 10
 
     input_data = utils.read_file(input_file)
     num_of_locations, num_houses, list_locations, list_houses, starting_car_location, adjacency_matrix = data_parser(input_data)
