@@ -1,4 +1,4 @@
-import sys, glob, subprocess, argparse
+import sys, glob, subprocess, argparse, os
 import networkx as nx
 import matplotlib.pyplot as plt
 sys.path.append("libs/")
@@ -17,12 +17,12 @@ def displayFile(input_file):
     pos = nx.spring_layout(G)
     cmap = []
     for node in G:
-      if node == starting_car_location:
-          cmap.append('r')
-      elif node in list_of_homes:
-          cmap.append('g')
-      else:
-          cmap.append('c')
+        if node == starting_car_location:
+            cmap.append('r')
+        elif node in list_of_homes:
+            cmap.append('g')
+        else:
+            cmap.append('c')
     nx.draw_networkx_nodes(G, pos, node_color=cmap)
     nx.draw_networkx_edges(G, pos)
     nx.draw_networkx_labels(G, pos)
@@ -36,12 +36,12 @@ def plotGraph():
     labels = nx.get_edge_attributes(G,'weight')
     cmap = []
     for node in G:
-      if node == home:
-          cmap.append('r')
-      elif node in tas:
-          cmap.append('g')
-      else:
-          cmap.append('c')
+        if node == home:
+            cmap.append('r')
+        elif node in tas:
+            cmap.append('g')
+        else:
+            cmap.append('c')
     nx.draw_networkx_nodes(G, pos, node_color=cmap)
     nx.draw_networkx_edges(G, pos)
     nx.draw_networkx_labels(G, pos)
@@ -50,13 +50,21 @@ def plotGraph():
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Visualize graphs.")
-    parser.add_argument("folder", type=str, help="Folder with *.in files")
+    parser.add_argument("files", type=str, help="*.in file or folder with *.in files")
     args = parser.parse_args()
 
-    for filename in sorted(glob.glob(args.folder + "/*.in")):
-        print("Displaying " + filename + "...")
+    if os.path.isdir(args.files):
+        for filename in sorted(glob.glob(args.files + "/*.in")):
+            print("Displaying " + filename + "...")
+            try:
+                displayFile(filename)
+            except:
+                print("Done!")
+                exit(0)
+    else:
+        print("Displaying " + args.files + "...")
         try:
-            displayFile(filename)
+            displayFile(args.files)
         except:
             print("Done!")
             exit(0)
