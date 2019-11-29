@@ -12,7 +12,7 @@ from student_utils import *
 
 ## TSP solver
 # Returns an ordered list of indicies of the adjacency_matrix starting with the starting_car_location
-def tsp(list_locations, list_houses, starting_car_location, all_paths):
+def tsp(list_locations, list_houses, starting_car_location, all_paths, timeout=5):
     with localsolver.LocalSolver() as ls:
 
         important_locations = [list_locations.index(starting_car_location)] + [list_locations.index(i) for i in list_houses]
@@ -53,7 +53,7 @@ def tsp(list_locations, list_houses, starting_car_location, all_paths):
         #
         # Parameterizes the solver with a time limit in seconds
         #
-        ls.param.time_limit = 5
+        ls.param.time_limit = timeout
 
         # Solve
         ls.solve()

@@ -24,7 +24,7 @@ def plotGraph():
     nx.draw_networkx_edge_labels(G,pos,edge_labels=labels)
     plt.show()
 
-def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_matrix, params=[]):
+def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_matrix, solve_timeout, params=[]):
     """
     Write your algorithm here.
     Input:
@@ -45,7 +45,7 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
     # Generate shortest path lengths to all nodes for dropoffs and returning to center
     pcessors, all_paths = nx.floyd_warshall_predecessor_and_distance(G)
 
-    tsp_solution = tsp(list_of_locations, list_of_homes, starting_car_location, all_paths)
+    tsp_solution = tsp(list_of_locations, list_of_homes, starting_car_location, all_paths, solve_timeout)
     tsp_solution = tsp_solution + [tsp_solution[0]]
     dropoffs = tsp_solution.copy()
     for iters in range(5):
@@ -115,9 +115,17 @@ def solve_from_file(input_file, output_directory, params=[]):
     print('Processing {}...'.format(input_file), end="")
     sys.stdout.flush()
 
+    solve_timeout = 10;
+    if '_50' in input_file:
+        solve_timeout = 3
+    elif '_100' in input_file:
+        solve_timeout = 6
+    else:
+        solve_timeout = 10
+
     input_data = utils.read_file(input_file)
     num_of_locations, num_houses, list_locations, list_houses, starting_car_location, adjacency_matrix = data_parser(input_data)
-    car_path, drop_offs = solve(list_locations, list_houses, starting_car_location, adjacency_matrix, params=params)
+    car_path, drop_offs = solve(list_locations, list_houses, starting_car_location, adjacency_matrix, solve_timeout, params=params)
 
     basename, filename = os.path.split(input_file)
     if not os.path.exists(output_directory):
