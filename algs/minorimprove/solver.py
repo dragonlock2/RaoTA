@@ -62,12 +62,44 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
             if t != c[0]:
                 d[pcessors[t][c[0]]].append(t)
         groups = [d[key] for key in d if len(d[key]) > 1]
-        insert = []
         if groups:
-            insert.append((c[0], list(set(c[1]) - set().union(*groups)))) # dropoff everyone who walks alone
+            insert = [(c[0], list(set(c[1]) - set().union(*groups)))] # dropoff everyone who walks alone
             for g in groups:
-                ll, ld = brute.solve(c[0], set(g), G, pcessors, all_paths) # brute force to determine optimal dropoff of rest of guys
-                
+                lilo, lidr = brute.solve(c[0], set(g), G, pcessors, all_paths) # brute force to determine optimal dropoff of rest of guys
+                for li in lilo[1:]: # don't include first one bc we know it
+                    if li in lidr:
+                        insert.append((li, lidr[li]))
+                    else:
+                        insert.append((li, []))
+            insertions.append(insert)
+
+    listinsertionpoints = [i[0][0] for i in insertions]
+    newdc = []
+    for i in dropcycle:
+        if i[0] in listinsertionpoints and len(i[1]) > 0:
+            index = -1
+            for j in range(len(insertions)):
+                if insertions[j][0][0] == i[0]:
+                    index = j
+                    break
+            newdc.extend(insertions[index])
+        else:
+            newdc.append(i)
+    dropcycle = newdc
+
+    # Update listlocs and listdropoffs
+    listlocs = [i[0] for i in dropcycle]
+    listdropoffs = {i[0]:i[1] for i in dropcycle if len(i[1]) > 0}
+    listdropoffs = {}
+    for i in dropcycle:
+        if len(i[1]) > 0:
+            if i[0] in listdropoffs:
+                listdropoffs[i[0]].extend(i[1])
+            else:
+                listdropoffs[i[0]] = i[1]
+
+    # TODO run TSP again
+    
 
     t1 = time.perf_counter() - t0
     print(" done! Time: {}s".format(t1))

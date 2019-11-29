@@ -8,7 +8,7 @@ import utils
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Performs basic checks to see if can improve an output.")
     parser.add_argument("inputs", type=str, help="Folder with *.in files")
-    parser.add_argument("outputs", type=str, help="Folder to output into")
+    parser.add_argument("outputs", type=str, help="Folder with *.out files")
     args = parser.parse_args()
 
     for infile in sorted(glob.glob(args.inputs + "/*.in")):
