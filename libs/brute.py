@@ -6,7 +6,7 @@ def powerset(iterable): # NOTE: this doesn't include empty
     s = list(iterable)
     return chain.from_iterable(combinations(s, r) for r in range(1,len(s)+1))
 
-def solve(sloc, stas, G, pcessors, all_paths):
+def solve(sloc, stas, G):
     class Car():
         def __init__(self, loc, tas, reached):
             self.loc = loc
@@ -52,6 +52,9 @@ def solve(sloc, stas, G, pcessors, all_paths):
 
         def isDone(self):
             return self.loc == sloc and len(self.tas) == 0
+
+    # When used on subgraphs, need to recalculate as to not explore in the wrong direction
+    pcessors, all_paths = nx.floyd_warshall_predecessor_and_distance(G)
 
     # Initialize variables for Dijkstra's
     pq = hd.heapdict()

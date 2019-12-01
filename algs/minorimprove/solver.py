@@ -69,7 +69,7 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
         if groups:
             insert = [(c[0], list(set(c[1]) - set().union(*groups)))] # dropoff everyone who walks alone
             for g in groups:
-                lilo, lidr = brute.solve(c[0], set(g), G, pcessors, all_paths) # brute force to determine optimal dropoff of rest of guys
+                lilo, lidr = brute.solve(c[0], set(g), G) # brute force to determine optimal dropoff of rest of guys
                 for li in lilo[1:]: # don't include first one bc we know it
                     if li in lidr:
                         insert.append((li, lidr[li]))

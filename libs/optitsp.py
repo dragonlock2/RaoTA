@@ -6,7 +6,9 @@ from ortools.constraint_solver import pywrapcp
 
 # Provides a subroutine to run optimizedtsp
 
-def solve(sloc, stas, G, pcessors, alldists, donttouch=[], timeout=2):
+def solve(sloc, stas, G, donttouch=[], timeout=2):
+    pcessors, alldists = nx.floyd_warshall_predecessor_and_distance(G)
+
     # Generate data for TSP
     dp_list = list(stas) # list of all nodes that must be visited
     if sloc not in dp_list:
