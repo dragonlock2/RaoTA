@@ -14,7 +14,7 @@ from student_utils import *
   Complete the following function.
 ======================================================================
 """
-def plotGraph():
+def plotGraph(G):
     pos = nx.spring_layout(G)
     labels = nx.get_edge_attributes(G,'weight')
     nx.draw_networkx_nodes(G, pos, node_color='c')
@@ -113,7 +113,7 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
 
 def semitree(starting_car_location, list_of_homes, G):
 
-    if len(list_of_homes) == 0 or len(list_of_homes == 1):
+    if len(list_of_homes) == 0 or len(list_of_homes) == 1:
         return [], {}
     
 
@@ -134,17 +134,29 @@ def semitree(starting_car_location, list_of_homes, G):
     for i in bfs_vert: #check removing nodes in BFS order
         checked.add(i) #these are the guys we checked
         G_copy = G.copy() 
-        G_copy.remove_node(i) 
+        if i in G_copy.nodes:
+            G_copy.remove_node(i) 
         temp = nx.connected_components(G_copy)
-        connect = list(temp)
-        if size(connect) > 1:
+        connect = []
+
+        for j in temp:
+            temp_G = G.copy()
+            for k in set(G.nodes) - j:
+                temp_G.remove_node(k)
+            connect += [temp_G]
+
+        if len(connect) > 1:
             for sub in connect:
                 list_of_subhomes = []
-                sup = true #is it maximal subgraph?
+                sup = True #is it maximal subgraph?
                 subgraph_hash = 0
+
+
+
+
                 for n in sub.nodes:
                     if n in checked:
-                        sup = false #it contains points already checked, so not maximal (also don't want to consider the piece containing Soda Hall as a subgraph)
+                        sup = False #it contains points already checked, so not maximal (also don't want to consider the piece containing Soda Hall as a subgraph)
                         break
                     elif n in list_of_homes:
                         list_of_subhomes += [n]
@@ -157,9 +169,11 @@ def semitree(starting_car_location, list_of_homes, G):
                     if len(sub_homes[subgraph_hash]) > 1:
                         forced_visit.add(i)
 
-                    subs[i] = subs[i] + sub
+                    subs[i] += [sub]
                     for n in sub.nodes:
-                        G.remove_node(n)
+                        if n in G.nodes:
+                            G.remove_node(n)
+
 
     list_of_homes = list(set_homes)
     forced_visit_list = list(forced_visit)
@@ -170,20 +184,26 @@ def semitree(starting_car_location, list_of_homes, G):
 
     subsols = {} #solutions of subgraphs
     for v in subs:
+        subsols[v] = []
+    for v in subs:
         for s in subs[v]:
             s_hash = 0
             for n in s.nodes:
                 s_hash += n
-            subsols[v] += semitree(v, sub_homes[s_hash], s)
+            a, b = semitree(v, sub_homes[s_hash], s)
+            subsols[v] += [[a, b]]
 
-    if source_home_count < 5:
+    if len(source_homes) < 5:
         listlocs, listdropoffs = brute.solve(starting_car_location, source_homes, G)
         return stitch(listlocs, listdropoffs, subsols)
     else:
-        listlocs, listdropoffs = optitsp.solve(starting_car_location, source_homes, G, forced_visit_list)
+        listlocs, listdropoffs = optitsp.solve(starting_car_location, source_homes, G, forced_visit_list)        
         return stitch(listlocs, listdropoffs, subsols)
 
 
+def pG(G):
+    for i in G.nodes:
+        print(i)
 
 
 
@@ -194,19 +214,19 @@ def semitree(starting_car_location, list_of_homes, G):
 
 
 def stitch(listlocs, listdropoffs, subsols = {}): #"stitch together" the solutions of the subgraphs. subs a dictionary of subgraph solutions: keys are base vertices, paired with lists of lists of solutions of subgraphs for that base vertex
-    for v in subsols.keys:
+    for v in subsols:
         if v in listlocs:
             for s in subsols[v]:
                 ind_v = listlocs.index(v)
                 listlocs.remove(v)
-                listlocs = listlocs[:ind_v] + s + listlocs[ind_v:]
-
-    for v in subsols.keys:
+                listlocs = listlocs[:ind_v] + list(s) + listlocs[ind_v:]
+    for v in subsols:
         listdropoffs.pop(v, None)
         for sols in subsols[v]:
             listdropoffs = {**listdropoffs, **sols[1]}
-
-
+    print(listdropoffs)
+    print(listlocs)
+    return listlocs, listdropoffs
     
                  
 
