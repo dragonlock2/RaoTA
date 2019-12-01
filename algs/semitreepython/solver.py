@@ -4,6 +4,9 @@ import subprocess
 sys.path.append('libs')
 import argparse
 import utils
+import brute
+import optitsp
+
 
 from student_utils import *
 """
@@ -29,6 +32,8 @@ def sortedset(tas, loc): # gives TAs left in car, naive if ta walks home alone, 
         if (len(d[key]) > 1):
             pd = pd.union(d[key])
     return [pd]
+
+
 
 def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_matrix, params=[]):
     """
@@ -103,64 +108,109 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
     global pcessors, all_paths
     pcessors, all_paths = nx.floyd_warshall_predecessor_and_distance(G)
 
-    # Initialize variables for Dijkstra's
-    pq = hd.heapdict()
-    startcar = Car(starting_car_location, list_of_homes.copy(), set())
-    paths, costs = {}, {}
+    return semitree(starting_car_location, list_of_homes, G)
 
-    # Add source point
-    pq[startcar] = 0
-    paths[startcar] = None
-    costs[startcar] = 0
 
-    inf = float('inf')
+def semitree(starting_car_location, list_of_homes, G):
 
-    # Run Dijkstra's
-    while pq:
-        # Pop off smallest in PQ
-        car, currcost = pq.popitem()
+    if len(list_of_homes) == 0 or len(list_of_homes == 1):
+        return [], {}
+    
 
-        if car.isDone():
-            break
+    #check if removing each vertex gives a disconnected graph, in DFS order
+    bfs_iter = list(nx.bfs_successors(G, starting_car_location))
 
-        for ncar, ncost in car.neighbors():
-            # Relax all edges
-            ncost += currcost
-            if ncost < costs.setdefault(ncar, inf):
-                pq[ncar] = ncost
-                costs[ncar] = ncost
-                paths[ncar] = car
+    #these guys are the ones we've checked through DFS, dont want to go backwards
+    checked = set()
 
-    # Reconstruct min path
-    minpath = []
-    currcar = Car(starting_car_location, set(), set())
-    while currcar != startcar:
-        currcar = paths[currcar]
-        minpath.append(currcar)
-    minpath = minpath[::-1]
-    # Didn't append end node yet so we can append shortest paths to it
-    pathback = nx.reconstruct_path(minpath[-1].loc, starting_car_location, pcessors)[1:-1] # Don't include first or last because already there
-    for n in pathback:
-        minpath.append(Car(n, set(), set()))
-    minpath.append(Car(starting_car_location, set(), set()))
+    bfs_vert = [bfs_iter[0][0]] + sum([[j for j in i[1]] for i in bfs_iter], []) #the nodes, in BFS order
 
-    # Convert to format for saving
-    listlocs, listdropoffs = [], {}
-    for i in range(len(minpath)):
-        listlocs.append(minpath[i].loc)
-        if (i < len(minpath) - 1):
-            drops = minpath[i].tas - minpath[i+1].tas
-            if len(drops) > 0:
-                listdropoffs[minpath[i].loc] = list(drops)
+    set_homes = set(list_of_homes)
+    subs = {} #We're gonna store the subgraphs in G with keys the node removed to create that graph
+    sub_homes = {} #dictionary of homes of subgraphs, with keys home.
+    forced_visit = set() #if the subgraph contains 2 or more homes, then Rao must enter that subgraph. These are the subgraphs that have more than two homes
+    for v in G.nodes:
+        subs[v] = []
+    for i in bfs_vert: #check removing nodes in BFS order
+        checked.add(i) #these are the guys we checked
+        G_copy = G.copy() 
+        G_copy.remove_node(i) 
+        temp = nx.connected_components(G_copy)
+        connect = list(temp)
+        if size(connect) > 1:
+            for sub in connect:
+                list_of_subhomes = []
+                sup = true #is it maximal subgraph?
+                subgraph_hash = 0
+                for n in sub.nodes:
+                    if n in checked:
+                        sup = false #it contains points already checked, so not maximal (also don't want to consider the piece containing Soda Hall as a subgraph)
+                        break
+                    elif n in list_of_homes:
+                        list_of_subhomes += [n]
+                    subgraph_hash += n
 
-    # Naive case
-    if len(listlocs) == 2:
-        listlocs = listlocs[:1]
+                if sup:
+                    sub_homes[subgraph_hash] = list_of_subhomes
+                    if len(sub_homes[subgraph_hash]) > 0:
+                        set_homes.add(i)
+                    if len(sub_homes[subgraph_hash]) > 1:
+                        forced_visit.add(i)
 
-    t1 = time.perf_counter() - t0
-    print(" done! Time: {}s".format(t1))
+                    subs[i] = subs[i] + sub
+                    for n in sub.nodes:
+                        G.remove_node(n)
 
-    return listlocs, listdropoffs
+    list_of_homes = list(set_homes)
+    forced_visit_list = list(forced_visit)
+    source_homes = []
+    for i in G.nodes:
+        if i in list_of_homes:
+            source_homes += [i]
+
+    subsols = {} #solutions of subgraphs
+    for v in subs:
+        for s in subs[v]:
+            s_hash = 0
+            for n in s.nodes:
+                s_hash += n
+            subsols[v] += semitree(v, sub_homes[s_hash], s)
+
+    if source_home_count < 5:
+        listlocs, listdropoffs = brute.solve(starting_car_location, source_homes, G)
+        return stitch(listlocs, listdropoffs, subsols)
+    else:
+        listlocs, listdropoffs = optitsp.solve(starting_car_location, source_homes, G, forced_visit_list)
+        return stitch(listlocs, listdropoffs, subsols)
+
+
+
+
+
+
+
+    
+
+
+
+def stitch(listlocs, listdropoffs, subsols = {}): #"stitch together" the solutions of the subgraphs. subs a dictionary of subgraph solutions: keys are base vertices, paired with lists of lists of solutions of subgraphs for that base vertex
+    for v in subsols.keys:
+        if v in listlocs:
+            for s in subsols[v]:
+                ind_v = listlocs.index(v)
+                listlocs.remove(v)
+                listlocs = listlocs[:ind_v] + s + listlocs[ind_v:]
+
+    for v in subsols.keys:
+        listdropoffs.pop(v, None)
+        for sols in subsols[v]:
+            listdropoffs = {**listdropoffs, **sols[1]}
+
+
+    
+                 
+
+    
 
 """
 ======================================================================
