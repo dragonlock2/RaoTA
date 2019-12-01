@@ -58,49 +58,49 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
     for key in listdropoffs:
         dropcycle[listlocs.index(key)][1].extend(listdropoffs[key])
 
-    # # Check if TAs share a path home
-    # insertions = []
-    # for c in dropcycle:
-    #     d = {n:[] for n in G.neighbors(c[0])}
-    #     for t in c[1]:
-    #         if t != c[0]:
-    #             d[pcessors[t][c[0]]].append(t)
-    #     groups = [d[key] for key in d if len(d[key]) > 1]
-    #     if groups:
-    #         insert = [(c[0], list(set(c[1]) - set().union(*groups)))] # dropoff everyone who walks alone
-    #         for g in groups:
-    #             lilo, lidr = brute.solve(c[0], set(g), G, pcessors, all_paths) # brute force to determine optimal dropoff of rest of guys
-    #             for li in lilo[1:]: # don't include first one bc we know it
-    #                 if li in lidr:
-    #                     insert.append((li, lidr[li]))
-    #                 else:
-    #                     insert.append((li, []))
-    #         insertions.append(insert)
+    # Check if TAs share a path home
+    insertions = []
+    for c in dropcycle:
+        d = {n:[] for n in G.neighbors(c[0])}
+        for t in c[1]:
+            if t != c[0]:
+                d[pcessors[t][c[0]]].append(t)
+        groups = [d[key] for key in d if len(d[key]) > 1]
+        if groups:
+            insert = [(c[0], list(set(c[1]) - set().union(*groups)))] # dropoff everyone who walks alone
+            for g in groups:
+                lilo, lidr = brute.solve(c[0], set(g), G, pcessors, all_paths) # brute force to determine optimal dropoff of rest of guys
+                for li in lilo[1:]: # don't include first one bc we know it
+                    if li in lidr:
+                        insert.append((li, lidr[li]))
+                    else:
+                        insert.append((li, []))
+            insertions.append(insert)
 
-    # listinsertionpoints = [i[0][0] for i in insertions]
-    # newdc = []
-    # for i in dropcycle:
-    #     if i[0] in listinsertionpoints and len(i[1]) > 0:
-    #         index = -1
-    #         for j in range(len(insertions)):
-    #             if insertions[j][0][0] == i[0]:
-    #                 index = j
-    #                 break
-    #         newdc.extend(insertions[index])
-    #     else:
-    #         newdc.append(i)
-    # dropcycle = newdc
+    listinsertionpoints = [i[0][0] for i in insertions]
+    newdc = []
+    for i in dropcycle:
+        if i[0] in listinsertionpoints and len(i[1]) > 0:
+            index = -1
+            for j in range(len(insertions)):
+                if insertions[j][0][0] == i[0]:
+                    index = j
+                    break
+            newdc.extend(insertions[index])
+        else:
+            newdc.append(i)
+    dropcycle = newdc
 
-    # # Update listlocs and listdropoffs
-    # listlocs = [i[0] for i in dropcycle]
-    # listdropoffs = {i[0]:i[1] for i in dropcycle if len(i[1]) > 0}
-    # listdropoffs = {}
-    # for i in dropcycle:
-    #     if len(i[1]) > 0:
-    #         if i[0] in listdropoffs:
-    #             listdropoffs[i[0]].extend(i[1])
-    #         else:
-    #             listdropoffs[i[0]] = i[1]
+    # Update listlocs and listdropoffs
+    listlocs = [i[0] for i in dropcycle]
+    listdropoffs = {i[0]:i[1] for i in dropcycle if len(i[1]) > 0}
+    listdropoffs = {}
+    for i in dropcycle:
+        if len(i[1]) > 0:
+            if i[0] in listdropoffs:
+                listdropoffs[i[0]].extend(i[1])
+            else:
+                listdropoffs[i[0]] = i[1]
 
     # Run TSP to get a better cycle
     listdps = list(listdropoffs.keys()) # contains all points that must be gone through
@@ -133,7 +133,7 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
     search_parameters = pywrapcp.DefaultRoutingSearchParameters()
     search_parameters.first_solution_strategy = (routing_enums_pb2.FirstSolutionStrategy.PATH_CHEAPEST_ARC)
     search_parameters.local_search_metaheuristic = (routing_enums_pb2.LocalSearchMetaheuristic.GUIDED_LOCAL_SEARCH)
-    search_parameters.time_limit.seconds = 10 # CHANGE THIS
+    search_parameters.time_limit.seconds = 5 # CHANGE THIS
     assignment = routing.SolveWithParameters(search_parameters)
     if not assignment:
         raise Exception("Nani TSP didn't work!")
