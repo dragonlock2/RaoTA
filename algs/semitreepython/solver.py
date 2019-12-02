@@ -114,9 +114,9 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
 def semitree(starting_car_location, list_of_homes, G):
 
     if len(list_of_homes) == 0 or len(list_of_homes) == 1:
-        return [], {}
+        return [starting_car_location], {}
     
-
+    _, all_paths = nx.floyd_warshall_predecessor_and_distance(G)
     #check if removing each vertex gives a disconnected graph, in DFS order
     bfs_iter = list(nx.bfs_successors(G, starting_car_location))
 
@@ -143,6 +143,13 @@ def semitree(starting_car_location, list_of_homes, G):
             temp_G = G.copy()
             for k in set(G.nodes) - j:
                 temp_G.remove_node(k)
+            temp_G.add_node(i)
+            for edge in G.edges(i):
+                if edge[0] in temp_G.nodes:
+                    temp_G.add_edge(i, edge[1], weight = all_paths[i][edge[1]])
+                elif edge[1] in temp_G.nodes:
+                    temp_G.add_edge(i, edge[0], weight = all_paths[i][edge[0]])
+
             connect += [temp_G]
 
         if len(connect) > 1:
@@ -187,6 +194,7 @@ def semitree(starting_car_location, list_of_homes, G):
         subsols[v] = []
     for v in subs:
         for s in subs[v]:
+            plotGraph(s)
             s_hash = 0
             for n in s.nodes:
                 s_hash += n
@@ -219,13 +227,10 @@ def stitch(listlocs, listdropoffs, subsols = {}): #"stitch together" the solutio
             for s in subsols[v]:
                 ind_v = listlocs.index(v)
                 listlocs.remove(v)
-                listlocs = listlocs[:ind_v] + list(s) + listlocs[ind_v:]
+                listlocs = listlocs[:ind_v] + s[0] + listlocs[ind_v:]
     for v in subsols:
-        listdropoffs.pop(v, None)
         for sols in subsols[v]:
             listdropoffs = {**listdropoffs, **sols[1]}
-    print(listdropoffs)
-    print(listlocs)
     return listlocs, listdropoffs
     
                  
