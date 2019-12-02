@@ -1,19 +1,17 @@
-zero two three ten seventeen twentyfour twentyfive twentysix thirtythree thirtyfour thirtyfive twentynine thirty thirtyseven thirtyeight fortyfive fortysix fortyseven fortyeight fiftyfive fiftyfour fiftythree sixty sixtyseven sixtysix sixtyfive sixtyfour seventyone seventyseven eightyfour seventyeight seventynine eighty eightyone eightyeight eightynine eightytwo seventyfive sixtyeight sixtyone sixtytwo sixtythree fiftyseven fifty fiftyone fortyfour thirtyseven thirtysix twentynine twentytwo fifteen twentyone fourteen thirteen twelve five four zero
-48
-zero six
-two two
-three three
-ten ten
-twentyfour twentyfour
-twentyfive twentyfive
-thirtythree thirtythree
-thirtyfour thirtyfour
-thirtyfive thirtyfive
+zero four five twelve thirteen twenty twentyone fifteen twentytwo twentynine thirtyfive thirtyfour thirtythree forty fortyseven fortyeight fiftyfive fiftyfour fiftythree sixty sixtyseven sixtysix sixtyfive sixtyfour seventy seventyseven seventyone seventyeight seventynine eighty eightyseven eightyeight eightyone eightytwo seventyfive sixtyeight sixtyone sixtytwo sixtythree fiftyseven fifty fiftyone fortyfour thirtyseven thirty twentythree twentyfour seventeen ten three two zero
+43
+four four
+five five six
+twelve twelve
+thirteen fourteen
+twenty twenty
+fifteen fifteen
+twentytwo twentytwo
 twentynine twentynine
-thirty thirty
-thirtyseven thirtyseven
-thirtyeight thirtynine
-fortyfive fortyfive
+thirtyfive thirtyfive
+thirtyfour thirtyfour
+thirtythree thirtythree
+forty thirtynine
 fortyseven fortyseven
 fortyeight fortyeight
 fiftyfive fiftyfive
@@ -22,15 +20,14 @@ sixty sixty
 sixtyseven sixtyseven
 sixtysix sixtysix
 sixtyfive sixtyfive
-sixtyfour seventy
-seventyone seventyone
+seventy seventy
 seventyseven seventyseven
-eightyfour eightyfour
-seventyeight seventyeight
+seventyone seventyone
+seventyeight seventyeight eightyfour
 seventynine seventynine
+eightyseven eightyseven
+eightyeight eightynine ninetyfive eightyeight
 eightyone eightyone
-eightyeight ninetyfive eightyeight eightyseven
-eightynine eightynine
 eightytwo eightytwo
 seventyfive seventyfive
 sixtyeight sixtyeight
@@ -39,12 +36,10 @@ sixtytwo sixtytwo
 fiftyseven fiftyseven
 fifty fifty
 fiftyone fiftyone
-fortyfour fortyfour
-thirtysix thirtysix
-twentytwo twentytwo
-fifteen fifteen
-twentyone twenty
-fourteen fourteen
-twelve twelve
-five five
-four four
+fortyfour fortyfour fortyfive
+thirtyseven thirtysix thirtyseven
+thirty thirty
+twentyfour twentyfive twentyfour
+ten ten
+three three
+two two
