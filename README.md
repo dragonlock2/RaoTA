@@ -34,13 +34,18 @@ cd ../brutecppCC
 make
 ```
 ### Running Algorithms
-We developed and ran several algorithms to get our outputs. Start by sorting the inputs.
+We developed and ran several algorithms to get our outputs. Here's the tl;dr list of commands.
+
 ```
 python3 sorter.py
+python3 bigsolve.py algs/brutecppCC orgin/bruteforceable/trees outputs
+python3 bigsolve.py algs/brutecppCC orgin/bruteforceable/treeish outputs
+python3 bigsolve.py algs/brutecppCC orgin/bruteforceable/tspable outputs
+# TODO how to run localsolver
+python3 bigsolve.py algs/minorimprove inputs outputs
+python3 bigsolve.py algs/experimental inputs outputs
 ```
-#### Brute Force
-```
-```
+It's possible to run the brute force parts faster using brutecppLVIII but this involves sorting out all 50.in bruteforceable inputs and running on those. The outputs are still the same so in the interest of time this is left as an exercise to the reader.
 
 ## Scripts
 
