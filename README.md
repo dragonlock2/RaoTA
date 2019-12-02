@@ -5,8 +5,42 @@ Matthew Tran, Kevin An, Joe Zou
 
 [Problem Statement](spec.pdf)
 
-## How to Use
-TODO
+## How to Use (Work in Progess)
+
+This section outlines the steps to run our code and generate outputs similar to what we have, keeping in mind a degree of randomness present in parts of our algorithms.
+
+Note: As of 12/1/19, Google OR-Tools and LocalSolver are only available on Python <=3.7 so we recommend sticking to Python 3.7.
+
+### Dependencies
+There's quite a few libraries to install.
+```
+pip3 install numpy
+pip3 install networkx
+pip3 install matplotlib
+pip3 install heapdict
+pip3 install ortools
+# TODO localsolver install tutorial
+```
+The brute force algorithms are implemented in C++.
+```
+sudo apt install libboost-all-dev # if on Linux
+brew install boost # if on MacOS
+```
+Now we need to compile the C++ algorithms.
+```
+cd algs/brutecppLVIII
+make
+cd ../brutecppCC
+make
+```
+### Running Algorithms
+We developed and ran several algorithms to get our outputs. Start by sorting the inputs.
+```
+python3 sorter.py
+```
+#### Brute Force
+```
+```
 
 ## Scripts
 
@@ -19,9 +53,11 @@ python3 sorter.py
 python3 bigsolve.py algs/brutecppCC orgin/bruteforceable/trees outputs -t 20
 ```
 
+The presence of a "Yeet!" indicates an output has been replaced.
+
 ### merge.py
 
-This script is used to merge a given set of new outputs with the current set of outputs. Useful for when computation is done on separate computers and have to be merged. A good way to fix this is to move all new outputs into a temp/ folder and repulling the old outputs. Then run the following:
+This script is used to merge a given set of new outputs with the current set of outputs. Useful for when computation is done on separate computers and have to be merged. A good way to fix this is to move all new outputs into a temp/ folder and repulling the outputs. Then run the following:
 
 ```
 python3 merge.py temp outputs
@@ -43,7 +79,7 @@ We denote a measure of "tree-ness" as the multplicative factor divided by the to
 
 ### graphvis.py
 
-This script is used to view all the .in files in a folder. To run it do:
+This script is used to view a .in file or all the .in files in a folder. To run it do:
 
 ```
 python3 graphvis.py inputs

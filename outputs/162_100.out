@@ -1,11 +1,13 @@
-CorpusChristi CedarRapids BonitaSprings Dallas Bridgeport Chicago Denton Bremerton CathedralCity Anaheim Champaign Elkhart Anchorage Davenport Buffalo Carrollton Arvada Albuquerque Columbus Detroit Austin Asheville BatonRouge Augusta ClarkeCounty DalyCity Akron ElPaso Cincinnati Amarillo Boise Chattanooga Abilene Bryan Clearwater Bradenton Canton Columbia Brownsville Cleveland BoiseCity Danbury DavidsonCounty AppleValley Burbank ElMonte CorpusChristi
-42
-CorpusChristi CapeCoral CorpusChristi Downey
+CorpusChristi ElMonte Burbank CedarRapids BonitaSprings Dallas Bridgeport Chicago Denton Bremerton CathedralCity Anaheim Champaign Elkhart Anchorage Davenport Bloomington Austin Asheville BatonRouge Chesapeake Durham Albuquerque Arvada Carrollton Buffalo Columbia Brownsville Cleveland BoiseCity Danbury DavidsonCounty AppleValley Amarillo Boise Chattanooga Abilene Bryan Clearwater Bradenton Canton DalyCity Akron ElPaso CorpusChristi
+40
+CorpusChristi Downey CapeCoral CorpusChristi
+ElMonte ElMonte
+Burbank Denver
 CedarRapids Alexandria
 BonitaSprings BonitaSprings
 Dallas Dallas
 Bridgeport Bridgeport
-Chicago Chicago Appleton
+Chicago Appleton Chicago
 Denton Denton
 Bremerton Bremerton
 CathedralCity CathedralCity
@@ -14,31 +16,27 @@ Champaign Champaign
 Elkhart Elkhart
 Anchorage BelAir Deltona
 Davenport Davenport
-Buffalo Bloomington Elizabeth
-Carrollton Carrollton
-Arvada Arvada
-Albuquerque Albuquerque
-Columbus Columbus
-Detroit Beaumont
-Austin Austin
+Bloomington Bloomington
+Austin Beaumont Austin
 Asheville Asheville
-BatonRouge Durham
-Augusta Augusta
-DalyCity DalyCity
-Akron Akron
-ElPaso ElPaso
-Cincinnati Cincinnati
-Amarillo Amarillo
-Chattanooga Escondido Chattanooga
-Bryan Bryan
-Clearwater Boulder Clearwater
-Bradenton Charleston
-Canton Canton
+BatonRouge Augusta
+Durham Durham
+Albuquerque Columbus Albuquerque
+Arvada Arvada
+Carrollton Carrollton
+Buffalo Elizabeth
 Columbia Columbia
 Brownsville Brownsville
 BoiseCity BoiseCity
 Danbury Danbury
 DavidsonCounty ColoradoSprings
 AppleValley Chandler AppleValley
-Burbank Denver
-ElMonte ElMonte
+Amarillo Cincinnati Amarillo
+Chattanooga Escondido Chattanooga
+Bryan Bryan
+Clearwater Clearwater Boulder
+Bradenton Charleston
+Canton Canton
+DalyCity DalyCity
+Akron Akron
+ElPaso ElPaso

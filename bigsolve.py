@@ -56,7 +56,7 @@ if __name__ == "__main__":
 
         try:
             t0 = time.perf_counter()
-            subprocess.run(["python3", args.solver + "/solver.py", f, "temp"], stdout=subprocess.PIPE, timeout=args.timeout)
+            subprocess.run(["python3.7", args.solver + "/solver.py", f, "temp"], stdout=subprocess.PIPE, timeout=args.timeout)
             t1 = time.perf_counter()
 
             print("{}s! ".format(round(t1-t0,2)), end="")
