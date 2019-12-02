@@ -112,10 +112,10 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
 
 
 def semitree(starting_car_location, list_of_homes, G):
-
-    if len(list_of_homes) == 0 or len(list_of_homes) == 1:
+    if len(list_of_homes) == 0:
         return [starting_car_location], {}
-    
+    elif len(list_of_homes) == 1:
+        return [starting_car_location], {starting_car_location: list_of_homes}
     _, all_paths = nx.floyd_warshall_predecessor_and_distance(G)
     #check if removing each vertex gives a disconnected graph, in DFS order
     bfs_iter = list(nx.bfs_successors(G, starting_car_location))
@@ -201,12 +201,13 @@ def semitree(starting_car_location, list_of_homes, G):
             a, b = semitree(v, sub_homes[s_hash], s)
             subsols[v] += [[a, b]]
 
-    if len(source_homes) < 5:
+    """if len(source_homes) < 5:
         listlocs, listdropoffs = brute.solve(starting_car_location, source_homes, G)
         return stitch(listlocs, listdropoffs, subsols)
-    else:
-        listlocs, listdropoffs = optitsp.solve(starting_car_location, source_homes, G, forced_visit_list)        
-        return stitch(listlocs, listdropoffs, subsols)
+    else:"""
+    listlocs, listdropoffs = optitsp.solve(starting_car_location, source_homes, G, forced_visit_list)
+
+    return stitch(listlocs, listdropoffs, subsols)
 
 
 def pG(G):
