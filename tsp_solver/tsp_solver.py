@@ -11,11 +11,12 @@ import utils
 from student_utils import *
 
 ## TSP solver
+# list_locations, list_houses, starting_car_location
 # Returns an ordered list of indicies of the adjacency_matrix starting with the starting_car_location
-def tsp(list_locations, list_houses, starting_car_location, all_paths, timeout=5):
+def tsp(house_indices, starting_car_index, all_paths, timeout=5):
     with localsolver.LocalSolver() as ls:
 
-        important_locations = [list_locations.index(starting_car_location)] + [list_locations.index(i) for i in list_houses]
+        important_locations = [starting_car_index] + [house_indices]
         
         # print(list_locations)
         # print('asdf')
@@ -61,7 +62,7 @@ def tsp(list_locations, list_houses, starting_car_location, all_paths, timeout=5
         # Reorder solution so starting_car_location is first
         scl_i = -1
         for i in range(cities.value.count()):
-            if list_locations[important_locations[cities.value.get(i)]] == starting_car_location:
+            if important_locations[cities.value.get(i)] == starting_car_index:
                 scl_i = i
                 break
         if scl_i == -1:
@@ -77,7 +78,7 @@ if __name__ == "__main__":
     G, _ = adjacency_matrix_to_graph(adjacency_matrix)
     pcessors, all_paths = nx.floyd_warshall_predecessor_and_distance(G)
     print(pcessors)
-    tsp_sol = tsp(list_locations, list_houses, starting_car_location, all_paths)
+    tsp_sol = tsp([list_locations.index(item) for item in list_houses], list_locations.index(starting_car_location), all_paths)
     #
     # Writes the solution in a file
     #

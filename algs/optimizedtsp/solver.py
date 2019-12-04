@@ -24,7 +24,8 @@ def plotGraph():
     nx.draw_networkx_edge_labels(G,pos,edge_labels=labels)
     plt.show()
 
-def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_matrix, solve_timeout, params=[]):
+# list_of_locations, list_of_homes, starting_car_location
+def solve(home_indices, starting_car_index, G, solve_timeout=5, forced_visit_indices=[], params=[]):
     """
     Write your algorithm here.
     Input:
@@ -40,24 +41,28 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
 
     # Create graph
     global G # Left here for debugging purposes
-    G, _ = adjacency_matrix_to_graph(adjacency_matrix)
 
     # Generate shortest path lengths to all nodes for dropoffs and returning to center
     pcessors, all_paths = nx.floyd_warshall_predecessor_and_distance(G)
 
-    tsp_solution = tsp(list_of_locations, list_of_homes, starting_car_location, all_paths, solve_timeout)
+
+
+    tsp_solution = tsp(home_indices, starting_car_index, all_paths, solve_timeout)
     tsp_solution = tsp_solution + [tsp_solution[0]]
     dropoffs = tsp_solution.copy()
     for iters in range(len(dropoffs)):
         for i in range(1, len(dropoffs) - 1): #iterate from 1 to len-2
-            min_j = -1;
-            min_cost = float("inf")
-            for j, _ in all_paths[tsp_solution[i]].items():
-                cost = 2/3 * all_paths[j][dropoffs[i-1]] + all_paths[j][tsp_solution[i]] + 2/3 * all_paths[j][dropoffs[i+1]]
-                if cost < min_cost:
-                    min_cost = cost
-                    min_j = j
-            dropoffs[i] = min_j
+            if (tsp_solution[i] not in forced_visit_indices):
+                min_j = -1;
+                min_cost = float("inf")
+                for j, _ in all_paths[tsp_solution[i]].items():
+                    cost = 2/3 * all_paths[j][dropoffs[i-1]] + all_paths[j][tsp_solution[i]] + 2/3 * all_paths[j][dropoffs[i+1]]
+                    if cost < min_cost:
+                        min_cost = cost
+                        min_j = j
+                dropoffs[i] = min_j
+
+
 
     # Convert to format for saving
     listlocs, listdropoffs = [], {}
@@ -123,7 +128,8 @@ def solve_from_file(input_file, output_directory, params=[]):
 
     input_data = utils.read_file(input_file)
     num_of_locations, num_houses, list_locations, list_houses, starting_car_location, adjacency_matrix = data_parser(input_data)
-    car_path, drop_offs = solve(list_locations, list_houses, starting_car_location, adjacency_matrix, solve_timeout, params=params)
+    G, _ = adjacency_matrix_to_graph(adjacency_matrix)
+    car_path, drop_offs = solve([list_locations.index(item) for item in list_houses], list_locations.index(starting_car_location), G, solve_timeout=solve_timeout, params=params)
 
     basename, filename = os.path.split(input_file)
     if not os.path.exists(output_directory):
