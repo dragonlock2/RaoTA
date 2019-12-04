@@ -2,10 +2,12 @@ import os
 import sys
 import subprocess
 sys.path.append('libs')
+sys.path.append('algs/optimizedtsp')
 import argparse
 import utils
 import brute
 import optitsp
+from optimizetsp.solver import solve as joe
 
 
 from student_utils import *
@@ -108,10 +110,10 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
     global pcessors, all_paths
     pcessors, all_paths = nx.floyd_warshall_predecessor_and_distance(G)
 
-    return semitree(starting_car_location, list_of_homes, G)
+    return semitree(list_of_locations, starting_car_location, list_of_homes, G)
 
 
-def semitree(starting_car_location, list_of_homes, G):
+def semitree(list_of_locations, starting_car_location, list_of_homes, G, subsolver = joe):
     if len(list_of_homes) == 0:
         return [starting_car_location], {}
     elif len(list_of_homes) == 1:
@@ -133,9 +135,9 @@ def semitree(starting_car_location, list_of_homes, G):
         subs[v] = []
     for i in bfs_vert: #check removing nodes in BFS order
         checked.add(i) #these are the guys we checked
-        G_copy = G.copy() 
+        G_copy = G.copy()
         if i in G_copy.nodes:
-            G_copy.remove_node(i) 
+            G_copy.remove_node(i)
         temp = nx.connected_components(G_copy)
         connect = []
 
@@ -201,24 +203,20 @@ def semitree(starting_car_location, list_of_homes, G):
             a, b = semitree(v, sub_homes[s_hash], s)
             subsols[v] += [[a, b]]
 
-    """if len(source_homes) < 5:
-        listlocs, listdropoffs = brute.solve(starting_car_location, source_homes, G)
+    if len(source_homes) <= 5:
+        dont_touch = set(forced_visit_list)
+        listlocs, listdropoffs = brute.solve(starting_car_location, source_homes, G, dont_touch)
         return stitch(listlocs, listdropoffs, subsols)
-    else:"""
-    listlocs, listdropoffs = optitsp.solve(starting_car_location, source_homes, G, forced_visit_list)
+    else:
+    listlocs, listdropoffs = subsolver(source_homes, starting_car_location, G, solve_timeout = 10 forced_visit_indices = forced_visit_list)
 
     return stitch(listlocs, listdropoffs, subsols)
 
 
-def pG(G):
-    for i in G.nodes:
-        print(i)
 
 
 
 
-
-    
 
 
 
@@ -233,10 +231,10 @@ def stitch(listlocs, listdropoffs, subsols = {}): #"stitch together" the solutio
         for sols in subsols[v]:
             listdropoffs = {**listdropoffs, **sols[1]}
     return listlocs, listdropoffs
-    
-                 
 
-    
+
+
+
 
 """
 ======================================================================
