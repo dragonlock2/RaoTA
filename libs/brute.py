@@ -2,11 +2,11 @@ import networkx as nx
 import heapdict as hd
 from itertools import chain, combinations
 
-def powerset(iterable): # NOTE: this doesn't include empty
+def powerset(iterable):
     s = list(iterable)
-    return chain.from_iterable(combinations(s, r) for r in range(1,len(s)+1))
+    return chain.from_iterable(combinations(s, r) for r in range(0,len(s)+1))
 
-def solve(sloc, stas, G):
+def solve(sloc, stas, G, donttouch=set()):
     class Car():
         def __init__(self, loc, tas, reached):
             self.loc = loc
@@ -27,28 +27,30 @@ def solve(sloc, stas, G):
 
         def neighbors(self):
             neighs = []
-            if self.loc in self.reached: # If I've been here before, then can't drop anyone off
+            if self.loc in self.reached:
                 for n in G.neighbors(self.loc):
                     cost = 2/3 * all_paths[self.loc][n]
                     car = Car(n, self.tas, self.reached)
                     neighs.append((car, cost))
             else:
-                newreached = self.reached.union(set([self.loc]))
-                # Trivial - drop everyone off and head home
-                cost = 2/3 * all_paths[self.loc][sloc] + sum([all_paths[self.loc][t] for t in self.tas])
-                car = Car(sloc, set(), newreached)
-                neighs.append((car, cost))
-                # Now try all ways of dropping people off
-                tas = self.tas - {self.loc} # If I'm at a TA's home, drop them off
-                pds = [set(pd) for pd in powerset(tas)]
-                pds_costs = [sum([all_paths[self.loc][t] for t in (tas - pd)]) for pd in pds]
+                newreached = self.reached.union({self.loc})
+                ptas = self.tas - {self.loc} - donttouch # TAs to make a powerset from
+                if self.loc in self.tas:
+                    pds = [set(pd).union({self.loc}) for pd in powerset(ptas)]
+                else:
+                    pds = [set(pd) for pd in powerset(ptas)]
+                pds_costs = [sum([all_paths[self.loc][t] for t in pd]) for pd in pds]
                 for pd, pdc in zip(pds, pds_costs):
-                    for n in G.neighbors(self.loc):
-                        cost = 2/3 * all_paths[self.loc][n] + pdc
-                        car = Car(n, pd, newreached)
+                    if len(pd) == len(self.tas):
+                        cost = 2/3 * all_paths[self.loc][sloc] + pdc
+                        car = Car(sloc, set(), set())
                         neighs.append((car, cost))
+                    else:
+                        for n in G.neighbors(self.loc):
+                            cost = 2/3 * all_paths[self.loc][n] + pdc
+                            car = Car(n, self.tas - pd, newreached)
+                            neighs.append((car, cost))
             return neighs
-
 
         def isDone(self):
             return self.loc == sloc and len(self.tas) == 0

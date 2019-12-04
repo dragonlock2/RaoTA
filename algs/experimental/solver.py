@@ -49,10 +49,6 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
 
     listlocs, listdropoffs = treesolve(sloc, stas, G, artmap)
 
-    print(listlocs)
-    for a in listdropoffs:
-        print(a, listdropoffs[a])
-
     t1 = time.perf_counter() - t0
     print(" done! Time: {}s".format(t1))
 
@@ -128,10 +124,10 @@ def treesolve(sloc, stas, G, artmap):
                     bccinsert[ap] = treesolve(ap, ap_tas, G.subgraph(ap_subg).copy(), artmap)
 
             # Run optitsp (or brute)
-            if len(bcctas) > 5 or len(bccforceta) > 0:
+            if len(bcctas) > 5:
                 optitsp_locs, optitsp_dropoffs = optitsp.solve(sloc, bcctas, bccg, donttouch=bccforceta)
             else:
-                optitsp_locs, optitsp_dropoffs = brute.solve(sloc, bcctas, bccg) # don't think this really ever gets run bc of bccforceta
+                optitsp_locs, optitsp_dropoffs = brute.solve(sloc, bcctas, bccg, donttouch=bccforceta)
             # Stitch everything together
             bcclocs = []
             for i in optitsp_locs:
