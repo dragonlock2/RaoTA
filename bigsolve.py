@@ -81,6 +81,11 @@ if __name__ == "__main__":
             else:
                 print()
         except subprocess.TimeoutExpired:
+            # little hack to automate appending to optimal.md
+            opmd = open("optimal.md", "a")
+            opmd.write(f[6:] + "\n")
+            opmd.close()
+
             long_flag = True
             shutil.copyfile(f, "orgin/long/" + os.path.basename(f))
             print(" took too long! (copied to orgin/long)")
