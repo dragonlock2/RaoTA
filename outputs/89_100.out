@@ -1,31 +1,30 @@
-start e1 e19 e2 e20 e3 e4 e6 e8 e22 e10 e23 e12 e24 e15 e17 start a2 a3 a1 a4 a5 start c3 c8 c9 c10 c13 c12 c11 c20 c36 c35 c31 c27 c29 c30 c23 c21 c20 c11 c8 c3 start d3 d4 d2 d1 start h4 h25 h17 h6 h16 h12 h11 h10 h9 h8 h2 start
-29
-e19 e19
-e20 e20
+start c6 c7 c24 c23 c30 c29 c27 c31 c35 c36 c20 c11 c12 c13 c10 c9 c8 c3 start d3 d4 d3 d1 start e3 e4 e6 e8 e22 e10 e23 e12 e24 e15 e25 e18 e1 start h4 h25 h17 h6 h16 h12 h11 h10 h9 h8 h2 start a4 a5 a1 a2 a3 start
+28
+c3 c1 c5
+c20 c17 c21
+c10 c10
+c13 c13 c15
+c23 c23
+c27 c26 c27
+c31 c31 c33
+d4 d4 d5
+d1 d1
+e1 e19
+e3 e20
 e4 e21
 e22 e22
 e23 e23
 e24 e24
-e15 e25
-a2 a2
-a3 a3
-a1 a1
-a4 a4
-a5 a5
-c10 c10
-c13 c13 c15
-c20 c17
-c31 c31 c33
-c27 c26 c27
-c23 c23
-c21 c21
-c3 c1 c5
-d4 d5 d4
-d1 d1
+e25 e25
+h2 h26
 h4 h22
-h25 h24
-h17 h17
 h6 h18
 h12 h13
+h25 h24
 h9 h9
-h2 h26
+h17 h17
+a4 a4
+a5 a5
+a1 a1
+a2 a2
+a3 a3
