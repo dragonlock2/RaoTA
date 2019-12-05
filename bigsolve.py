@@ -32,7 +32,7 @@ if __name__ == "__main__":
     parser.add_argument("outputs", type=str, help="Folder to output into")
     parser.add_argument("-l", "--long", action="store_true", help="If specified runs from orgin/long folder and disables timeout")
     parser.add_argument("-t", "--timeout", default=120, type=float, help="Specifies max time each input file will have to finish (Default: 60s)")
-    parser.add_argument("-g", "--debug", action="store_true", help="If specified, will not delete temp/ folder after finishing")
+    parser.add_argument("-g", "--debug", action="store_true", help="If specified, will not delete temp/ folder after finishing and disables timeout")
     args = parser.parse_args()
 
     python = sys.executable # To make easier to run different versions
@@ -58,7 +58,10 @@ if __name__ == "__main__":
 
         try:
             t0 = time.perf_counter()
-            subprocess.run([python, args.solver + "/solver.py", f, "temp"], stdout=subprocess.PIPE, timeout=args.timeout)
+            if args.debug:
+                subprocess.run([python, args.solver + "/solver.py", f, "temp"])
+            else:
+                subprocess.run([python, args.solver + "/solver.py", f, "temp"], stdout=subprocess.PIPE, timeout=args.timeout)
             t1 = time.perf_counter()
 
             print("{}s! ".format(round(t1-t0,2)), end="")

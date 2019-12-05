@@ -7,6 +7,7 @@ sys.path.append("libs")
 import utils
 import optitsp
 import brute
+import gurobilp
 
 from student_utils import *
 """
@@ -125,7 +126,7 @@ def treesolve(sloc, stas, G, artmap):
 
             # Run optitsp (or brute)
             if len(bcctas) > 5:
-                optitsp_locs, optitsp_dropoffs = optitsp.solve(sloc, bcctas, bccg, donttouch=bccforceta)
+                optitsp_locs, optitsp_dropoffs = gurobilp.solve(sloc, bcctas, bccg, donttouch=bccforceta)
             else:
                 optitsp_locs, optitsp_dropoffs = brute.solve(sloc, bcctas, bccg, donttouch=bccforceta)
             # Stitch everything together

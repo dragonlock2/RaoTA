@@ -125,7 +125,7 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
                     for i in c:
                         for j in c:
                             expr += e[i,j]
-                    model.cbLazy(expr <= len(c) - 1)        
+                    model.cbLazy(expr <= len(c) - 1)      
 
     def getCycles(edges):
         visited = {i[0]:False for i in edges}
@@ -151,6 +151,7 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
 
     """ Run optimizer """
 
+    m.params.MIPFocus = 2 # focus on optimality
     m.params.LazyConstraints = 1
     m.optimize(cbSubtourElim)
 
@@ -169,7 +170,7 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
         indstart = c.index(sloc)
         jumpcycle = c[indstart:] + c[:indstart] + [sloc]
     else:
-        jumpcycle = [sloc]
+        jumpcycle = [sloc, sloc]
 
     # Reconstruct intermediate nodes
     listlocs = []

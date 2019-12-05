@@ -1,3 +1,3 @@
-# Experimental Algorithm
+# Experimental Algorithm (gurobilp)
 
-Gurobi testing.
+ILP algorithm using Gurobi.
