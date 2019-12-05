@@ -3,51 +3,65 @@ CS 170 Fall 2019 Project
 
 Matthew Tran, Kevin An, Joe Zou
 
-[Problem Statement](spec.pdf)
+[Problem Statement](docs/spec.pdf)
 
 ## How to Use (Work in Progess)
 
-This section outlines the steps to run our code and generate outputs similar to what we have, keeping in mind a degree of randomness present in parts of our algorithms.
+This section outlines the steps to run our code and generate outputs similar to what we have.
 
-Note: As of 12/1/19, Google OR-Tools and LocalSolver are only available on Python <=3.7 so we recommend sticking to Python 3.7.
+Note: As of 12/1/19, Gurobi, Google OR-Tools, and LocalSolver are only available on Python <=3.7 so we recommend using Python 3.7.
 
-### Dependencies
-There's quite a few libraries to install.
+Let's start by installing the numerous dependencies. Run everything from the base project folder unless otherwise noted.
+
+### Installing Pip Libraries
 ```
 pip3 install numpy
 pip3 install networkx
 pip3 install matplotlib
 pip3 install heapdict
 pip3 install ortools
-# TODO localsolver install tutorial
 ```
-The brute force algorithms are implemented in C++.
+
+### Compiling C++ Algorithms
 ```
 sudo apt install libboost-all-dev # if on Linux
 brew install boost # if on MacOS
-```
-Now we need to compile the C++ algorithms.
-```
+
 cd algs/brutecppLVIII
 make
 cd ../brutecppCC
 make
 ```
+
+### Installing LocalSolver (TODO)
+
+### Installing Gurobi
+
+Gurobi offers a free academic license. A quick Google search should provide all the instructions for getting it up and running. Basically make an account, download, and then set the key. Make sure to be on Airbears2 or eduroam when setting the key.
+
+We didn't want to use Gurobi's version of Python, so we used their gurobipy module. Run the following from the Gurobi's installation directory. On MacOS, we used Spotlight to help find it. If there's a setup.py in the folder you're in the right place.
+```
+python3 setup.py install
+```
+
 ### Running Algorithms
-We developed and ran several algorithms to get our outputs. Here's the tl;dr list of commands.
+
+We developed and ran several algorithms to get our outputs. Here's a tl;dr list of commands. We made a lot of little changes to our algorithms as we went along but we've done our best to ensure that running these commands will get outputs that are very close to what we have.
 
 ```
 python3 sorter.py
 python3 bigsolve.py algs/brutecppCC orgin/bruteforceable/trees outputs
 python3 bigsolve.py algs/brutecppCC orgin/bruteforceable/treeish outputs
 python3 bigsolve.py algs/brutecppCC orgin/bruteforceable/tspable outputs
-# TODO how to run localsolver
+python3 bigsolve.py algs/optimizedtsp inputs outputs # TODO make sure this works
 python3 bigsolve.py algs/minorimprove inputs outputs
-python3 bigsolve.py algs/experimental inputs outputs
+python3 bigsolve.py algs/semitreepython inputs outputs
+python3 bigsolve.py algs/semitreealt inputs outputs
 ```
-It's possible to run the brute force parts faster using brutecppLVIII but this involves sorting out all 50.in bruteforceable inputs and running on those. The outputs are still the same so in the interest of time this is left as an exercise to the reader.
 
-## Scripts
+And just like that you are done!
+
+## A Couple of Scripts
 
 ### bigsolve.py
 
