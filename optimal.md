@@ -9,11 +9,11 @@ bruteforceable/treeish
 bruteforceable/tspable
 50/trees
 50/treeish
+50/tspable
 ```
 
 ## Folders To Be Solved
 ```
-50/tspable
 100/trees
 100/treeish
 100/tspable
@@ -30,4 +30,9 @@ other/tspable
 50/treeish/214_50.in
 50/treeish/234_50.in
 50/treeish/30_50.in
+50/tspable/132_50.in
+50/tspable/309_50.in
+50/tspable/3_50.in
+50/tspable/82_50.in
+50/tspable/97_50.in
 ```
