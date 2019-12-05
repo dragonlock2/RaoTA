@@ -8,3 +8,4 @@ orgin/*
 !.gitkeep
 temp/
 algs/brutecppCC/in.txt
+gurobi.log

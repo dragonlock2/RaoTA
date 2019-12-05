@@ -35,6 +35,8 @@ if __name__ == "__main__":
     parser.add_argument("-g", "--debug", action="store_true", help="If specified, will not delete temp/ folder after finishing")
     args = parser.parse_args()
 
+    python = sys.executable # To make easier to run different versions
+
     if args.long:
         args.inputs = "orgin/long"
         args.timeout = 86400 # can't really pass in too big number into timeout
@@ -56,7 +58,7 @@ if __name__ == "__main__":
 
         try:
             t0 = time.perf_counter()
-            subprocess.run(["python3", args.solver + "/solver.py", f, "temp"], stdout=subprocess.PIPE, timeout=args.timeout)
+            subprocess.run([python, args.solver + "/solver.py", f, "temp"], stdout=subprocess.PIPE, timeout=args.timeout)
             t1 = time.perf_counter()
 
             print("{}s! ".format(round(t1-t0,2)), end="")
