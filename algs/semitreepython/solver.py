@@ -7,7 +7,7 @@ import argparse
 import utils
 import brute
 import optitsp
-from optimizetsp.solver import solve as joe
+from optimizedtsp.solver import solve as joe
 
 
 from student_utils import *

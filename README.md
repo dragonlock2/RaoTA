@@ -55,7 +55,7 @@ python3 bigsolve.py algs/brutecppCC orgin/bruteforceable/treeish outputs
 python3 bigsolve.py algs/brutecppCC orgin/bruteforceable/tspable outputs
 python3 bigsolve.py algs/optimizedtsp inputs outputs # TODO make sure this works
 python3 bigsolve.py algs/minorimprove inputs outputs
-python3 bigsolve.py algs/semitreepython inputs outputs
+python3 bigsolve.py algs/semitreepython inputs outputs # TODO double check this works bc it depends on Joe's
 python3 bigsolve.py algs/semitreealt inputs outputs
 ```
 
@@ -86,6 +86,14 @@ python3 merge.py temp outputs
 
 This script sorts all the inputs/ based on certain criteria into orginout/. Mainly, it is used to sort inputs by size and completeness. It also maintains separate folders for bruteforceable inputs and inputs that don't maximize the given limits. This script can be run without arguments.
 
+### copy.py
+
+Copies files entered into a popup Sublime text file from input folder to output folder. Useful for copying over our files that took too long. Try the following.
+
+```
+python3 copy.py -i orgin -o tmplong
+```
+
 ### benchmark.py
 
 This script is used to record characteristics of optimal solutions for small input. It adds data on the number of nodes, multiplicative factor of extra edges, percent improvement over naive, and percent of total cost that is driving to a csv file which can be analyzed later. Try the following command:
@@ -105,7 +113,3 @@ python3 graphvis.py inputs
 ```
 
 To move onto the next graph, just click or press a key while in the matplotlib image. To stop early, go to your terminal and issue a KeyboardInterrupt. Then close the matplotlib plot.
-
-### checkout.py
-
-This script prints out all files that we don't have a solution to yet. Run without arguments.

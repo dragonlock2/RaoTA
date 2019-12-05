@@ -11,4 +11,4 @@ python3 libs/wrapper.py -n 15 20 25 -e 1 -s algs/brutecppLVIII
 python3 libs/wrapper.py -b
 ```
 
-It also provides brute.py, optitsp.py, and minimp.py which are implementations of their corresponding algorithms available as subroutines.
+It also provides gurobilp.py, brute.py, optitsp.py, and minimp.py which are implementations of their corresponding algorithms available as subroutines.
