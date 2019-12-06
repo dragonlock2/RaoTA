@@ -102,7 +102,7 @@ def solve(sloc, stas, G, donttouch=set()):
             cycles = getCycles(ed)
             if len(cycles) > 1: # if more than 1 cycle, then we have a subtour
                 for c in cycles:
-                    expr = 0 # all edges in the subgraph must total < |S|-1
+                    expr = 0 # all edges in the subgraph must total <= |S|-1
                     for i in c:
                         for j in c:
                             expr += e[i,j]
@@ -132,8 +132,8 @@ def solve(sloc, stas, G, donttouch=set()):
 
     """ Run optimizer """
 
-    m.params.TimeLimit = 10 # allow only 10s
-    m.params.MIPGap = 0.05 # allow 5% tolerance
+    # m.params.TimeLimit = 10 # allow only 10s
+    # m.params.MIPGap = 0.05 # allow 5% tolerance
     m.params.MIPFocus = 2 # focus on optimality
     m.params.LazyConstraints = 1
     m.optimize(cbSubtourElim)

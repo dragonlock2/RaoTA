@@ -126,14 +126,16 @@ def treesolve(sloc, stas, G, artmap):
 
             # Run optitsp (or brute)
             if len(bcctas) > 5:
-                optitsp_locs, optitsp_dropoffs = optitsp.solve(sloc, bcctas, bccg, donttouch=bccforceta)
+                optitsp_locs, optitsp_dropoffs = gurobilp.solve(sloc, bcctas, bccg, donttouch=bccforceta)
             else:
                 optitsp_locs, optitsp_dropoffs = brute.solve(sloc, bcctas, bccg, donttouch=bccforceta)
             # Stitch everything together
             bcclocs = []
+            bcc_inserted = []
             for i in optitsp_locs:
-                if i in bccinsert:
+                if i in bccinsert and i not in bcc_inserted:
                     bcclocs.extend(bccinsert[i][0])
+                    bcc_inserted.append(i) # don't double insert
                 else:
                     bcclocs.append(i)
             bccdropoffs = {}
