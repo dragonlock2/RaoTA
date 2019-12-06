@@ -1,7 +1,7 @@
 import os, subprocess, argparse, shutil
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Copies files in a text file over from one folder to another")
+    parser = argparse.ArgumentParser(description="Copies entered files over from one folder to another")
     parser.add_argument("-i", "--infolder", default="orgin", type=str, help="Folder containing files to be entered (default: orgin)")
     parser.add_argument("-o", "--outfolder", default="tmplong", type=str, help="Folder to write files to (default: tmplong")
     parser.add_argument("-r", "--remove", action="store_true", help="If specified, will also remove all files in outfolder")
@@ -23,8 +23,11 @@ if __name__ == "__main__":
     print("Thanks! Copying them over now...")
     t = open("tmp.txt")
     for l in t.readlines():
-    	l = l.strip()
-    	shutil.copyfile(args.infolder + "/" + l, args.outfolder + "/" + os.path.basename(l))
+        infile = args.infolder + "/" + l.strip()
+        if len(l) > 3 and os.path.isfile(infile):
+            shutil.copyfile(infile, args.outfolder + "/" + os.path.basename(infile))
+        else:
+            print("Invalid file " + infile)
     t.close()
 
     os.remove("tmp.txt")

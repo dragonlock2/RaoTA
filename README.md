@@ -88,10 +88,18 @@ This script sorts all the inputs/ based on certain criteria into orginout/. Main
 
 ### copyin.py
 
-Copies files entered into a popup Sublime text file from input folder to output folder. Useful for copying over our files that took too long. Try the following.
+Copies files entered into a popup Sublime text file from input folder to output folder. Useful for copying over our files that took too long. Try the following:
 
 ```
 python3 copyin.py -i orgin -o tmplong
+```
+
+### removin.py
+
+Removes files entered into a popup Sublime text file from input folder. Useful for removing files that we already know the solution to or simply take too long. Try the following:
+
+```
+python3 removin.py tmplong
 ```
 
 ### benchmark.py
