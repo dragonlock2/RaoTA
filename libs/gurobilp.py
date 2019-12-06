@@ -132,6 +132,8 @@ def solve(sloc, stas, G, donttouch=set()):
 
     """ Run optimizer """
 
+    m.params.TimeLimit = 10 # allow only 10s
+    m.params.MIPGap = 0.05 # allow 5% tolerance
     m.params.MIPFocus = 2 # focus on optimality
     m.params.LazyConstraints = 1
     m.optimize(cbSubtourElim)

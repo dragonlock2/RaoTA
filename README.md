@@ -86,12 +86,12 @@ python3 merge.py temp outputs
 
 This script sorts all the inputs/ based on certain criteria into orginout/. Mainly, it is used to sort inputs by size and completeness. It also maintains separate folders for bruteforceable inputs and inputs that don't maximize the given limits. This script can be run without arguments.
 
-### copy.py
+### copyin.py
 
 Copies files entered into a popup Sublime text file from input folder to output folder. Useful for copying over our files that took too long. Try the following.
 
 ```
-python3 copy.py -i orgin -o tmplong
+python3 copyin.py -i orgin -o tmplong
 ```
 
 ### benchmark.py

@@ -1,30 +1,71 @@
-Plano SantaClara Irving Pasadena Sunnyvale Norman MorenoValley Warren SanFrancisco Rochester OklahomaCity Cary LasVegas Vallejo WestValleyCity Vancouver Beaumont Atlanta Cleveland Denver Hayward BatonRouge Montgomery Memphis Mesa OWO Chesapeake Wichita Waco Ontario Omaha Garland KansasCity StLouis AnnArbor FortLauderdale Norfolk Reno LouisvilleJefferson Tulsa SantaAna Lincoln Seattle Huntsville Lafayette JerseyCity Anaheim Elizabeth Lancaster LosAngeles Akron Escondido Hollywood Glasses SanJose Killeen Allentown FortCollins SantaRosa Laredo Tampa Portland GrandPrairie McAllen FortWorth Raleigh Glendale Houston Pomona Spokane CorpusChristi SantaClarita Fremont Madison SanBernardino Knoxville Brownsville Corona Surprise Greensboro Teemo Davidson NewHaven SanAntonio Chicago Salinas Philadelphia Anchorage Thornton Joliet Mesquite Worcester Dallas Hartford Mobile HuntingtonBeach Oski AthensClarkeCounty Fullerton Irvine Olathe Miami Cincinnati Tallahassee Riverside Rockford Plano
-91
-Rockford Rockford
-Riverside Riverside
-Tallahassee Hampton
-Cincinnati Cincinnati
-Miami Miami
-Olathe Olathe
-Irvine LittleRock Irvine
-Fullerton AugustaRichmond
-Oski SimiValley
-HuntingtonBeach HuntingtonBeach
-Mobile Mobile
-Hartford Hartford NewOrleans
-Dallas Dallas
-Worcester Worcester
-Mesquite Mesquite
-Thornton Thornton
-Anchorage Anchorage
-Philadelphia GardenGrove
-Salinas Salinas
+Plano SantaClara Irving Pasadena Sunnyvale Norman MorenoValley Warren SanFrancisco Rochester OklahomaCity Cary LasVegas Vallejo WestValleyCity Vancouver Beaumont Atlanta Cleveland Denver Hayward BatonRouge Montgomery Memphis Mesa OWO Chesapeake Wichita Waco Ontario Omaha Garland KansasCity StLouis AnnArbor FortLauderdale Norfolk Reno LouisvilleJefferson Tulsa SantaAna Lincoln Seattle Huntsville Lafayette JerseyCity Anaheim Elizabeth Lancaster LosAngeles Akron Escondido Hollywood Glasses SanJose Killeen Allentown SantaRosa FortCollins Laredo Tampa Portland GrandPrairie McAllen Yonkers Raleigh Denton Chicago Salinas Philadelphia Anchorage Thornton Joliet Mesquite Worcester Dallas Hartford Mobile HuntingtonBeach Corona Brownsville Knoxville SanBernardino Madison Fremont SantaClarita CorpusChristi Spokane Pomona Houston SanAntonio NewHaven Davidson Teemo Greensboro Surprise NewOrleans AugustaRichmond Fullerton Irvine Olathe Miami Cincinnati Tallahassee Riverside Rockford Plano
+90
+SantaClara SantaClara
+Irving Irving
+Pasadena Pasadena
+Sunnyvale Sunnyvale
+Norman Norman
+MorenoValley MorenoValley
+Warren Warren
+SanFrancisco SanFrancisco
+OklahomaCity OklahomaCity
+Cary Cary
+LasVegas LasVegas
+Vallejo Vallejo
+Vancouver Vancouver
+Beaumont Beaumont
+Atlanta Atlanta Oxnard
+Denver Denver
+Hayward Hayward
+Montgomery Montgomery
+Memphis Charleston Memphis
+Mesa Mesa
+OWO OWO
+Wichita Wichita
+Waco Waco
+Ontario Ontario
+Omaha Omaha
+Garland Garland
+StLouis StLouis
+AnnArbor AnnArbor
+FortLauderdale FortLauderdale
+Norfolk Norfolk
+LouisvilleJefferson LouisvilleJefferson
+Tulsa Tulsa
+Lincoln Lincoln
+Huntsville Huntsville
+Lafayette Lafayette
+JerseyCity JerseyCity Pikachu
+Anaheim Anaheim
+Elizabeth Elizabeth
+Lancaster Lancaster Torrance
+Akron Akron
+Escondido Escondido
+Hollywood Hollywood
+Glasses Glasses
+SanJose SanJose
+Killeen Killeen
+Allentown Allentown Stamford
+SantaRosa SantaRosa
+FortCollins FortCollins SiouxFalls
+Laredo Laredo
+Tampa Tampa ThousandOaks
+Portland Portland
+GrandPrairie GrandPrairie
+McAllen McAllen
+Raleigh Glendale Raleigh
+Denton Denton
 Chicago Chicago
-SanAntonio SanAntonio
-NewHaven NewHaven
-Davidson Davidson
-Greensboro Greensboro
-Surprise Surprise
+Salinas Salinas
+Philadelphia GardenGrove
+Anchorage Anchorage
+Thornton Thornton
+Mesquite Mesquite
+Worcester Worcester
+Dallas Dallas
+Hartford Hartford
+Mobile Mobile
+HuntingtonBeach HuntingtonBeach SimiValley
 Corona Corona
 Brownsville Brownsville
 Knoxville Knoxville
@@ -35,59 +76,17 @@ SantaClarita SantaClarita
 CorpusChristi CorpusChristi
 Pomona Pomona
 Houston Houston
-Glendale Glendale
-Raleigh Raleigh
-FortWorth Denton
-McAllen McAllen
-GrandPrairie GrandPrairie
-Portland Portland
-Tampa ThousandOaks Tampa
-Laredo Laredo
-FortCollins FortCollins SiouxFalls
-SantaRosa SantaRosa
-Allentown Stamford Allentown
-Killeen Killeen
-SanJose SanJose
-Glasses Glasses
-Hollywood Hollywood
-Escondido Escondido
-Akron Akron
-Lancaster Torrance Lancaster
-Elizabeth Elizabeth
-Anaheim Anaheim
-JerseyCity JerseyCity Pikachu
-Lafayette Lafayette
-Huntsville Huntsville
-Lincoln Lincoln
-Tulsa Tulsa
-LouisvilleJefferson LouisvilleJefferson
-Norfolk Norfolk
-FortLauderdale FortLauderdale
-AnnArbor AnnArbor
-StLouis StLouis
-Garland Garland
-Omaha Omaha
-Ontario Ontario
-Waco Waco
-Wichita Wichita
-OWO OWO
-Mesa Mesa
-Memphis Charleston Memphis
-Montgomery Montgomery
-Hayward Hayward
-Denver Denver
-Atlanta Oxnard Atlanta
-Beaumont Beaumont
-Vancouver Vancouver
-Vallejo Vallejo
-LasVegas LasVegas
-Cary Cary
-OklahomaCity OklahomaCity
-SanFrancisco SanFrancisco
-Warren Warren
-MorenoValley MorenoValley
-Norman Norman
-Sunnyvale Sunnyvale
-Pasadena Pasadena
-Irving Irving
-SantaClara SantaClara
+SanAntonio SanAntonio
+NewHaven NewHaven
+Davidson Davidson
+Greensboro Greensboro
+Surprise Surprise
+NewOrleans NewOrleans
+AugustaRichmond AugustaRichmond
+Irvine LittleRock Irvine
+Olathe Olathe
+Miami Miami
+Cincinnati Cincinnati
+Tallahassee Hampton
+Riverside Riverside
+Rockford Rockford

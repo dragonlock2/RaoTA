@@ -1,28 +1,26 @@
 aa0 aa1 aa5 aa8 aa2 aa4 aa2 aa8 aa9 ab0 ab1 ab5 ab8 ab7 ab4 ab7 ab8 ab9 ac0 ac4 ac7 ac3 ac6 ac3 ac7 ac4 ac9 ad0 ad9 ad1 ad2 ad3 ad2 ad1 ad9 ga0 ga1 ga5 ga8 ga9 gb0 gb3 gb4 gb7 gb9 gc0 gc1 gc0 gc6 gc5 gc9 gd0 gd2 gd5 gd3 gd4 gd6 gd9 ka0 ka2 ka5 ka7 ka4 ka6 ka9 kb0 kb1 kb3 kb7 kb4 kb8 kb5 kb2 kb6 kb9 kc0 kc2 kc4 kc6 kc9 kd0 kd1 kd3 kd2 kd4 kd6 kd9 aa0
-42
+43
 aa5 aa5 aa6
-aa4 aa3 aa7 aa4
 ab5 ab5
-ab8 ab8
 ab7 ab7
-ab4 ab4 ab2
-ac6 ac8 ac6
-ac3 ac7 ac3 ac2
-ad3 ad5 ad7 ad6 ad8 ad4
-ga1 ga3 ga2
+ab4 ab2 ab4
+ab8 ab8
+ac6 ac6 ac8
+ac3 ac2 ac3
+ac7 ac7
+ga1 ga2 ga3
 ga5 ga6
-ga8 ga7 ga4
+ga8 ga4 ga7
 gb0 gb2
 gb3 gb3
 gb4 gb4
 gb7 gb7
 gb9 gb6
-gc0 gc3 gc8
-gc1 gc1 gc2
+gc0 gc8 gc3
 gc5 gc5
 gd3 gd3
 gd4 gd4
-gd9 gd8 gd7 gd9
+gd9 gd7 gd8 gd9
 ka2 ka2
 ka5 ka5
 ka7 ka8 ka7
@@ -42,3 +40,6 @@ kd3 kd3
 kd4 kd4
 kd6 kd5
 kd9 kd8
+aa4 aa3 aa4 aa7
+ad3 ad4 ad5 ad6 ad7 ad8
+gc1 gc1 gc2

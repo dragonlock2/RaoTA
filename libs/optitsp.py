@@ -4,12 +4,14 @@ import networkx as nx
 from ortools.constraint_solver import routing_enums_pb2
 from ortools.constraint_solver import pywrapcp
 
+from gurobipy import *
+
 # Provides a subroutine to run optimizedtsp
 
 def solve(sloc, stas, G, donttouch=set()):
     pcessors, alldists = nx.floyd_warshall_predecessor_and_distance(G)
 
-    ta_cycle = tspCycle(sloc, stas, alldists)
+    ta_cycle = gurobiTspCycle(sloc, stas, alldists)
     drop_cycle = optCycle(ta_cycle, alldists, donttouch)
     listdropoffs = reconDropoffs(sloc, stas, ta_cycle, drop_cycle)
     listlocs = reconLocs(drop_cycle, pcessors)
@@ -63,6 +65,85 @@ def tspCycle(sloc, stas, alldists, timeout=0):
     ta_cycle = [dp_map[i] for i in ta_cycle]
 
     return ta_cycle
+
+def gurobiTspCycle(sloc, stas, alldists):
+    m = Model()
+
+    nodes = set(stas).union({sloc})
+
+    # Add variable for each edge
+    e = {}
+    for i in nodes:
+        for j in nodes:
+            e[i,j] = m.addVar(obj=alldists[i][j], vtype=GRB.BINARY, name="e{}_{}".format(i, j))
+    m.update()
+
+    # Add degree 2 constraint for all vertices
+    for i in nodes:
+        m.addConstr(quicksum(e[i,j] for j in nodes) == 1)
+        m.addConstr(quicksum(e[j,i] for j in nodes) == 1)
+        e[i,i].ub = 0
+    m.update()
+
+    # Add lazy constraint
+    def cbSubtourElim(model, where):
+        if where == GRB.callback.MIPSOL:
+            ed = [] # make list of selected edges
+            for i in nodes:
+                for j in nodes:
+                    sol = model.cbGetSolution(e[i,j]);
+                    if sol > 0.5:
+                        ed += [(i,j)]
+            cycles = getCycles(ed)
+            if len(cycles) > 1: # if more than 1 cycle, then we have a subtour
+                for c in cycles:
+                    expr = 0 # all edges in the subgraph must total <= |S|-1
+                    for i in c:
+                        for j in c:
+                            expr += e[i,j]
+                    model.cbLazy(expr <= len(c) - 1)
+
+    def getCycles(edges):
+        visited = {i[0]:False for i in edges}
+        nexts = {i[0]:i[1] for i in edges}
+        cycles = []
+
+        while True:
+            curr = -1
+            for i in visited:
+                if visited[i] == False:
+                    curr = i
+                    break
+            if curr == -1:
+                break
+            thiscycle = []
+            while not visited[curr]:
+                visited[curr] = True
+                thiscycle.append(curr)
+                curr = nexts[curr]
+            cycles.append(thiscycle)
+
+        return cycles
+
+    m.params.LazyConstraints = 1
+    m.optimize(cbSubtourElim)
+
+    # Get travel cycle
+    ed = [] # get selected edges
+    edec = m.getAttr('x', e)
+    for i in nodes:
+        for j in nodes:
+            if edec[i,j] > 0.5:
+                ed.append((i,j))
+    cycles = getCycles(ed) # find the one cycle
+    if cycles:
+        c = cycles[0] # rearrange so sloc first
+        indstart = c.index(sloc)
+        jumpcycle = c[indstart:] + c[:indstart] + [sloc]
+    else:
+        jumpcycle = [sloc]
+
+    return jumpcycle
 
 # Runs basic optimization on TSP cycle, just tries alternate dropoff points
 def optCycle(ta_cycle, alldists, donttouch):
