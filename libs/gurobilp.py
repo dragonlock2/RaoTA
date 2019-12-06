@@ -33,13 +33,13 @@ def solve(sloc, stas, G, donttouch=set()):
         ind[i] = m.addVar(vtype=GRB.BINARY, name="ind"+str(i))
     m.update()
 
-    # Sum variable to count number of non-home dropoffs
-    sumtot = m.addVar(name="sumtot")
-    m.update()
+    # # Sum variable to count number of non-home dropoffs
+    # sumtot = m.addVar(name="sumtot")
+    # m.update()
 
-    # Indicator variable if there is a non-home dropoffs
-    indtot = m.addVar(vtype=GRB.BINARY, name="indtot")
-    m.update()
+    # # Indicator variable if there is a non-home dropoffs
+    # indtot = m.addVar(vtype=GRB.BINARY, name="indtot")
+    # m.update()
 
     """ Add constraints """
 
@@ -63,13 +63,13 @@ def solve(sloc, stas, G, donttouch=set()):
         m.addGenConstrOr(ind[i], [v[i,k] for k in stas])
     m.update()
 
-    # Add non-home sum constraint
-    m.addLConstr(quicksum(ind[i] for i in nodes if i != sloc) == sumtot)
-    m.update()
+    # # Add non-home sum constraint
+    # m.addLConstr(quicksum(ind[i] for i in nodes if i != sloc) == sumtot)
+    # m.update()
 
-    # Setup non-home indicator
-    m.addGenConstrOr(indtot, [ind[i] for i in nodes if i != sloc])
-    m.update()
+    # # Setup non-home indicator
+    # m.addGenConstrOr(indtot, [ind[i] for i in nodes if i != sloc])
+    # m.update()
 
     # Add in and out degree constraints for non-home vertices
     for i in nodes:
@@ -78,16 +78,20 @@ def solve(sloc, stas, G, donttouch=set()):
             m.addLConstr(quicksum(e[j,i] for j in nodes) == ind[i])
     m.update()
 
-    # Add constraints for home, if non-home dropoff, then must leave and come back
-    m.addGenConstrIndicator(indtot, True, quicksum(e[sloc,i] for i in nodes) == 1.0)
-    m.addGenConstrIndicator(indtot, True, quicksum(e[i,sloc] for i in nodes) == 1.0)
+    # # Add constraints for home, if non-home dropoff, then must leave and come back
+    # m.addGenConstrIndicator(indtot, True, quicksum(e[sloc,i] for i in nodes) == 1.0)
+    # m.addGenConstrIndicator(indtot, True, quicksum(e[i,sloc] for i in nodes) == 1.0)
 
-    # Limit number of edges to form a cycle through dropoffs
-    expr = 0
-    for i in nodes:
-        for j in nodes:
-            expr += e[i,j]
-    m.addGenConstrIndicator(indtot, True, expr == sumtot + 1)
+    # Add constraints for home, if non-home dropoff, then must leave and come back
+    m.addLConstr(quicksum(e[sloc,i] for i in nodes) == 1.0)
+    m.addLConstr(quicksum(e[i,sloc] for i in nodes) == 1.0)
+
+    # # Limit number of edges to form a cycle through dropoffs
+    # expr = 0
+    # for i in nodes:
+    #     for j in nodes:
+    #         expr += e[i,j]
+    # m.addGenConstrIndicator(indtot, True, expr == sumtot + 1)
 
     """ Add callback to handle subtours """
 
@@ -132,7 +136,7 @@ def solve(sloc, stas, G, donttouch=set()):
 
     """ Run optimizer """
 
-    # m.params.TimeLimit = 10 # allow only 10s
+    m.params.TimeLimit = 300 # allow only 5 min
     # m.params.MIPGap = 0.05 # allow 5% tolerance
     m.params.MIPFocus = 2 # focus on optimality
     m.params.LazyConstraints = 1

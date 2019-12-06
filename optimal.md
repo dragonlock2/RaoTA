@@ -32,7 +32,6 @@ All done!
 50/treeish/30_50.in
 
 50/tspable/132_50.in
-50/tspable/309_50.in
 50/tspable/3_50.in
 50/tspable/82_50.in
 50/tspable/97_50.in
