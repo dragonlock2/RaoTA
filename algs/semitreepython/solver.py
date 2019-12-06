@@ -7,7 +7,7 @@ import argparse
 import utils
 import brute
 import optitsp
-from optimizedtsp.solver import solve as joe
+import gurobilp
 
 
 from student_utils import *
@@ -113,7 +113,7 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
     return semitree(list_of_locations, starting_car_location, list_of_homes, G)
 
 
-def semitree(list_of_locations, starting_car_location, list_of_homes, G, subsolver = joe):
+def semitree(list_of_locations, starting_car_location, list_of_homes, G, subsolver = gurobilp.solve):
     if len(list_of_homes) == 0:
         return [starting_car_location], {}
     elif len(list_of_homes) == 1:
@@ -208,9 +208,9 @@ def semitree(list_of_locations, starting_car_location, list_of_homes, G, subsolv
         listlocs, listdropoffs = brute.solve(starting_car_location, source_homes, G, dont_touch)
         return stitch(listlocs, listdropoffs, subsols)
     else:
-    listlocs, listdropoffs = subsolver(source_homes, starting_car_location, G, solve_timeout = 10 forced_visit_indices = forced_visit_list)
-
-    return stitch(listlocs, listdropoffs, subsols)
+    	dont_touch = set(forced_visit_list)
+    	listlocs, listdropoffs = subsolver(starting_car_location, source_homes, G, dont_touch)
+    	return stitch(listlocs, listdropoffs, subsols)
 
 
 
