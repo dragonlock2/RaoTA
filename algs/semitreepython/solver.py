@@ -110,19 +110,21 @@ def solve(list_of_locations, list_of_homes, starting_car_location, adjacency_mat
     global pcessors, all_paths
     pcessors, all_paths = nx.floyd_warshall_predecessor_and_distance(G)
 
-    return semitree(list_of_locations, starting_car_location, list_of_homes, G)
+    return semitree(list_of_locations, starting_car_location, list_of_homes, G, optitsp.solve)
 
 
 def semitree(list_of_locations, starting_car_location, list_of_homes, G, subsolver = gurobilp.solve):
-    if len(list_of_homes) == 0:
+    if len(list_of_homes) == 0: #base case: if there's no TA's don't do anything
         return [starting_car_location], {}
-    elif len(list_of_homes) == 1:
+    elif len(list_of_homes) == 1: #base case: only one TA, drop him off at starting point
         return [starting_car_location], {starting_car_location: list_of_homes}
+
     _, all_paths = nx.floyd_warshall_predecessor_and_distance(G)
+
     #check if removing each vertex gives a disconnected graph, in DFS order
     bfs_iter = list(nx.bfs_successors(G, starting_car_location))
 
-    #these guys are the ones we've checked through DFS, dont want to go backwards
+    #these guys are the ones we've checked through DFS, make sure we only recursive call on subgraphs, and make sure the subgraphs are maximal
     checked = set()
 
     bfs_vert = [bfs_iter[0][0]] + sum([[j for j in i[1]] for i in bfs_iter], []) #the nodes, in BFS order
@@ -185,7 +187,6 @@ def semitree(list_of_locations, starting_car_location, list_of_homes, G, subsolv
 
 
     list_of_homes = list(set_homes)
-    forced_visit_list = list(forced_visit)
     source_homes = []
     for i in G.nodes:
         if i in list_of_homes:
@@ -200,16 +201,14 @@ def semitree(list_of_locations, starting_car_location, list_of_homes, G, subsolv
             s_hash = 0
             for n in s.nodes:
                 s_hash += n
-            a, b = semitree(v, sub_homes[s_hash], s)
+            a, b = semitree(v, sub_homes[s_hash], s) 
             subsols[v] += [[a, b]]
 
     if len(source_homes) <= 5:
-        dont_touch = set(forced_visit_list)
-        listlocs, listdropoffs = brute.solve(starting_car_location, source_homes, G, dont_touch)
+        listlocs, listdropoffs = brute.solve(starting_car_location, source_homes, G, forced_visit)
         return stitch(listlocs, listdropoffs, subsols)
     else:
-    	dont_touch = set(forced_visit_list)
-    	listlocs, listdropoffs = subsolver(starting_car_location, source_homes, G, dont_touch)
+    	listlocs, listdropoffs = subsolver(starting_car_location, source_homes, G, forced_visit)
     	return stitch(listlocs, listdropoffs, subsols)
 
 
