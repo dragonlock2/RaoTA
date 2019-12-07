@@ -66,10 +66,7 @@ All done!
 100/tspable/118_100.in
 100/tspable/14_100.in
 100/tspable/155_100.in
-100/tspable/203_100.in
-100/tspable/182_100.in
 100/tspable/246_100.in
-100/tspable/20_100.in
 
 200/treeish/173_200.in
 200/treeish/110_200.in
@@ -104,7 +101,6 @@ All done!
 200/treeish/174_200.in
 200/treeish/318_200.in
 200/treeish/222_200.in
-200/treeish/279_200.in
 200/treeish/251_200.in
 200/treeish/6_200.in
 200/treeish/13_200.in

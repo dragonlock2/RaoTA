@@ -11,6 +11,8 @@ This section outlines the steps to run our code and generate outputs similar to 
 
 Note: As of 12/6/19, Gurobi, Google OR-Tools, and LocalSolver are only available on Python <=3.7 so we recommend using Python 3.7.
 
+We had many headaches getting this to run on Linux and Windows, so we recommend MacOS.
+
 Let's start by getting the numerous dependencies. Run everything from the base project folder unless otherwise noted.
 
 ### Installing Pip Libraries
@@ -32,7 +34,7 @@ make
 cd ../brutecppCC
 make
 ```
-Note: If the code isn't compiling, try MacOS or Ubuntu. We had some issues with WSL.
+Note: If the code isn't compiling, try MacOS. We had some issues with Linux.
 
 ### Installing LocalSolver
 
