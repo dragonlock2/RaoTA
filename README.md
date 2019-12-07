@@ -32,6 +32,7 @@ make
 cd ../brutecppCC
 make
 ```
+Note: If the code isn't compiling, try MacOS or Ubuntu. We had some issues with WSL.
 
 ### Installing LocalSolver
 
@@ -41,14 +42,14 @@ LocalSolver offers a free academic license. A quick Google search should provide
 
 Gurobi offers a free academic license. A quick Google search should provide all the instructions for getting it up and running. Basically make an account, download, and then set the key. Make sure to be on Airbears2 or eduroam when setting the key.
 
-We didn't want to use Gurobi's version of Python, so we used their gurobipy module. Run the following from the Gurobi's installation directory. On MacOS, we used Spotlight to help find it. If there's a setup.py in the folder you're in the right place.
+We didn't want to use Gurobi's version of Python, so we used their gurobipy module. Run the following from Gurobi's installation directory. On MacOS, we used Spotlight to help find it. If there's a setup.py in the folder you're in the right place.
 ```
 python3 setup.py install
 ```
 
 ### Running Algorithms
 
-If inputs/ and outputs/ don't exist, copy over the inputs/ folder full of inputs and make an empty outputs/ folder.
+Note to TAs: Copy over the inputs/ folder now and make an outputs/ folder.
 
 We developed and ran several algorithms to get our outputs. Here's a tl;dr list of commands. We made a lot of little changes to our algorithms as we went along but we've done our best to ensure that running these commands will get outputs that are very close to what we have.
 
