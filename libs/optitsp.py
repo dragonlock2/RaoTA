@@ -14,7 +14,8 @@ def solve(sloc, stas, G, donttouch=set()):
     ta_cycle = gurobiTspCycle(sloc, stas, alldists)
     drop_cycle = optCycle(ta_cycle, alldists, donttouch)
     listdropoffs = reconDropoffs(sloc, stas, ta_cycle, drop_cycle)
-    drop_cycle = gurobiTspCycle(sloc, set(listdropoffs.keys()), alldists)
+    if (len(listdropoffs) > 1):
+        drop_cycle = gurobiTspCycle(sloc, set(listdropoffs.keys()), alldists)
     listlocs = reconLocs(drop_cycle, pcessors)
 
     return listlocs, listdropoffs

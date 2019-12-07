@@ -136,7 +136,7 @@ def solve(sloc, stas, G, donttouch=set()):
 
     """ Run optimizer """
 
-    m.params.TimeLimit = 480 # allow only 8 min
+    m.params.TimeLimit = 1200 # allow only 20 min
     # m.params.MIPGap = 0.05 # allow 5% tolerance
     m.params.MIPFocus = 2 # focus on optimality
     m.params.LazyConstraints = 1

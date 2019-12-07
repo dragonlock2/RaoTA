@@ -6,4 +6,4 @@ Note that there are two constant factors specifying how many TAs must be dropped
 
 Note: sortedpython is guaranteed to perform at least as well as the naive solution.
 
-Deprecated because in favor of our newer algorithms. This one is too slow and provides subpar solutions.
+Deprecated in favor of our newer algorithms. This one is too slow and provides subpar solutions.
