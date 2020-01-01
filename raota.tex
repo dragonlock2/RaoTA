@@ -1,0 +1,23 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\usepackage{amsmath, amssymb, amsthm}
+
+
+\title{RaoTA, or drop off the TAs}
+\author{Kevin An, Matthew Tran, Joe Zou}
+\date{December 2019}
+
+\begin{document}
+
+\maketitle
+\pagebreak
+\section{Introduction}
+    This article discusses approximation algorithms we developed for a NP-complete problem ("Drive the TAs Home", or DTH) given to us in CS170 the fall of 2019 at UC Berkeley taught by professors Satish Rao and Prasad Raghavendra. The problem statement, restated below, can be found at \url{https://cs170.org/assets/project/spec.pdf}. Our code itself can be found at \url{https://github.com/dragonlock2/RaoTA}.
+    
+\section{Problem Statement}
+    	Intuitively, say Prof. Rao is at Soda Hall, and has a bunch of TAs with him. All the TAs have to walk home, and costs them each energy equal to the distance they walk if they have to walk some distance d. However, Prof. Rao has a car, so he takes energy $\epsilon \in (0, 1)$ times the amount of energy it takes for a TA to travel the same distance. Rao can take an arbitrary number of TAs in his car, and can drop off TAs at some location and have each TA walk the rest. Note that if $\epsilon \leq \frac{1}{2}$, it is always optimal to simply drop everyone off at their respective homes, and thus just solving "Travelling Salesman" problem on the homes would be optimal so Rao would visit each home with the least energy (and the TAs spend none). 
+        \\
+        Suppose we are given an undirected graph $G(V, E)$ with edges weighted by a distance function $d: |V| \times |V| \xrightarrow{} \mathbb{R}$. We additionally require that $d$ satisfies the triangle inequality. We have a starting point $s \in V$, and then some $H \subset V$ of homes, each associated to a TA.  We assume the homes are in bijection with the set of TAs (call them $I$), and index each house by $h_i \in H$ for each $i \in I$ to mean $h_i$ is TA $i$'s house.
+
+\end{document}
