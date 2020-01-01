@@ -44,7 +44,6 @@ All done!
 100/treeish/244_100.in
 100/treeish/30_100.in
 100/treeish/30_200.in
-100/treeish/39_100.in
 100/treeish/58_100.in
 100/treeish/72_100.in
 100/treeish/94_100.in
@@ -67,10 +66,7 @@ All done!
 100/tspable/118_100.in
 100/tspable/14_100.in
 100/tspable/155_100.in
-100/tspable/203_100.in
-100/tspable/182_100.in
 100/tspable/246_100.in
-100/tspable/20_100.in
 
 200/treeish/173_200.in
 200/treeish/110_200.in
@@ -105,7 +101,6 @@ All done!
 200/treeish/174_200.in
 200/treeish/318_200.in
 200/treeish/222_200.in
-200/treeish/279_200.in
 200/treeish/251_200.in
 200/treeish/6_200.in
 200/treeish/13_200.in
@@ -121,9 +116,7 @@ All done!
 200/tspable/258_200.in
 200/tspable/203_200.in
 200/tspable/244_200.in
-200/tspable/239_200.in
 200/tspable/182_200.in
-200/tspable/155_200.in
 200/tspable/14_200.in
 200/tspable/175_200.in
 200/tspable/10_200.in
@@ -159,7 +152,6 @@ other/treeish/75_200.in
 other/treeish/168_100.in
 other/treeish/51_200.in
 other/treeish/98_200.in
-other/treeish/254_200.in
 other/treeish/180_200.in
 other/treeish/214_100.in
 other/treeish/314_100.in

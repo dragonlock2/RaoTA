@@ -12,3 +12,14 @@ python3 libs/wrapper.py -b
 ```
 
 It also provides gurobilp.py, brute.py, optitsp.py, and minimp.py which are implementations of their corresponding algorithms available as subroutines.
+
+## Available subsolvers
+This is also the home to a couple of our algorithms implemented as a subroutine. Unlike their main algorithm counterparts, they also take in a forced dropoff parameter.
+### gurobilp.py
+ILP reduction of the problem. In order to vastly improve runtime, it does not work on inputs where the naive solution is optimal.
+### brute.py
+Brute force algorithm. Like brutepython but kind of not really. Really only works well on less than 8 TAs.
+### optitsp.py
+Optimized TSP but uses Google OR-Tools and Gurobi instead of LocalSolver. Also includes a bit of minorimprove reoptimizes the dropoff cycle afterwards. It's currently setup to use Gurobi but we have kept the Google OR-Tools implementation for legacy support.
+### minimp.py
+Minor improvement algorithm using Google OR-Tools. Doesn't support forced dropoffs. Not recommended for use in new algorithms.

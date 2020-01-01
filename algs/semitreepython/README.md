@@ -1,3 +1,0 @@
-# Semitree Python
-
-TODO
