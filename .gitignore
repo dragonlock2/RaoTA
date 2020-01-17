@@ -10,3 +10,8 @@ temp/
 algs/brutecppCC/in.txt
 gurobi.log
 tmplong/
+
+raota.aux
+raota.log
+raota.out
+raota.synctex.gz
