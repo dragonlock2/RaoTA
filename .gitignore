@@ -11,7 +11,7 @@ algs/brutecppCC/in.txt
 gurobi.log
 tmplong/
 
-raota.aux
-raota.log
-raota.out
-raota.synctex.gz
+docs/article/raota.aux
+docs/article/raota.log
+docs/article/raota.out
+docs/article/raota.synctex.gz
